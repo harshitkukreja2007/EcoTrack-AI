@@ -47,10 +47,10 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-bold tracking-tight text-white">
-                EcoTrack <span className="text-eco-green text-glow-green">AI</span>
+                EcoTrack <span className="text-eco-green">AI</span>
               </span>
               <span className="text-[10px] text-gray-500 uppercase tracking-widest -mt-1 font-mono">
-                Eco-Tech Engine
+                Carbon Tracker & Goals
               </span>
             </div>
           </div>
@@ -68,16 +68,15 @@ export default function Navbar() {
         {/* Logo */}
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-eco-green/10 border border-eco-green/20 group-hover:border-eco-green/50 transition-all duration-300">
-              <Leaf className="h-5 w-5 text-eco-green group-hover:scale-110 transition-transform duration-300" />
-              <div className="absolute inset-0 -z-10 rounded-xl bg-eco-green/20 blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-eco-green/10 border border-eco-green/20 group-hover:border-eco-green/45 transition-all duration-300">
+              <Leaf className="h-5 w-5 text-eco-green group-hover:scale-105 transition-transform duration-300" />
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-bold tracking-tight text-white group-hover:text-eco-green transition-colors duration-300">
-                EcoTrack <span className="text-eco-green text-glow-green">AI</span>
+                EcoTrack <span className="text-eco-green">AI</span>
               </span>
               <span className="text-[10px] text-gray-500 uppercase tracking-widest -mt-1 font-mono">
-                Eco-Tech Engine
+                Carbon Tracker & Goals
               </span>
             </div>
           </Link>

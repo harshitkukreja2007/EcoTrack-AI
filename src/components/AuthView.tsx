@@ -85,7 +85,7 @@ export default function AuthView() {
             <Leaf className="h-6 w-6 text-eco-green animate-pulse" />
           </div>
           <h2 className="text-2xl font-bold tracking-tight text-white">
-            Access <span className="text-eco-green text-glow-green">EcoTrack AI</span>
+            Access <span className="text-eco-green">EcoTrack AI</span>
           </h2>
           <p className="text-xs text-gray-400 mt-1">
             Authenticate to sync your footprint metrics & daily streaks.

@@ -25,9 +25,6 @@ export default function Home() {
       <div className="absolute inset-0 -z-20 bg-grid-cyber opacity-75"></div>
       <div className="absolute top-1/4 left-1/4 -z-10 h-96 w-96 rounded-full bg-eco-green/10 blur-[120px] animate-pulse-slow"></div>
       <div className="absolute bottom-1/4 right-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-eco-cyan/10 blur-[150px] animate-pulse-slow"></div>
-      
-      {/* Scanner Animation Line */}
-      <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-eco-green/45 to-transparent animate-scanner shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
 
       <Navbar />
 
@@ -35,15 +32,15 @@ export default function Home() {
         {/* Hero Section */}
         <section className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center flex flex-col items-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-eco-green/30 bg-eco-green/5 px-4 py-1.5 text-xs font-semibold text-eco-green-light tracking-wide uppercase mb-6 animate-pulse">
-            <Zap className="h-3.5 w-3.5" />
-            <span>AI-Powered Sustainability Suite v1.0</span>
+          <div className="inline-flex items-center gap-2 rounded-full border border-gray-800 bg-gray-900/50 px-4 py-1.5 text-xs font-semibold text-eco-green-light tracking-wide uppercase mb-6">
+            <ShieldCheck className="h-3.5 w-3.5 text-eco-green" />
+            <span>Personalized Carbon Tracker & Goal Engine</span>
           </div>
 
           {/* Heading */}
           <h1 className="max-w-4xl text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl font-sans text-white leading-tight">
             Decode Your Carbon Footprint.<br />
-            Power the <span className="bg-gradient-to-r from-eco-green via-emerald-400 to-eco-cyan bg-clip-text text-transparent text-glow-green">Eco-Tech Revolution</span>.
+            Take Action for a <span className="bg-gradient-to-r from-eco-green via-emerald-400 to-eco-cyan bg-clip-text text-transparent">Greener Planet</span>.
           </h1>
 
           {/* Subheading */}
@@ -55,16 +52,16 @@ export default function Home() {
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-eco-green to-eco-cyan px-8 py-4 text-base font-semibold text-white shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_40px_rgba(16,185,129,0.55)] hover:scale-105 transition-all duration-300"
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-eco-green to-eco-cyan px-8 py-4 text-base font-semibold text-white shadow-[0_0_20px_rgba(16,185,129,0.15)] hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:scale-102 transition-all duration-300"
             >
-              <span>Initialize Dashboard</span>
+              <span>Start Tracking</span>
               <ArrowRight className="h-5 w-5" />
             </Link>
             <a
               href="#mission"
               className="rounded-xl border border-gray-800 bg-[#0d1321]/40 px-8 py-4 text-base font-semibold text-gray-300 hover:bg-[#0d1321]/80 hover:border-gray-700 transition-all duration-300"
             >
-              Explore Engine Specs
+              How It Works
             </a>
           </div>
 
@@ -75,7 +72,7 @@ export default function Home() {
               <span className="mt-2 text-3xl font-extrabold text-white text-glow-green font-mono">1,429,812 kg</span>
             </div>
             <div className="glass-panel rounded-2xl p-6 text-center border-eco-cyan/20">
-              <span className="text-sm font-mono text-gray-500 uppercase tracking-widest block">Active Eco Operators</span>
+              <span className="text-sm font-mono text-gray-500 uppercase tracking-widest block">Active Trackers</span>
               <span className="mt-2 text-3xl font-extrabold text-white text-glow-cyan font-mono">24,910</span>
             </div>
             <div className="glass-panel rounded-2xl p-6 text-center">
@@ -93,11 +90,11 @@ export default function Home() {
             
             <div>
               <div className="flex items-center gap-2 text-eco-green mb-3">
-                <Activity className="h-5 w-5" />
-                <span className="font-mono text-xs uppercase tracking-widest font-semibold">Real-Time Estimator</span>
+                <BarChart3 className="h-5 w-5" />
+                <span className="font-mono text-xs uppercase tracking-widest font-semibold">Real-Time Tracker</span>
               </div>
               <h2 className="text-3xl font-bold text-white tracking-tight sm:text-4xl">
-                Dynamic Carbon Projection
+                Footprint Projection
               </h2>
               <p className="mt-4 text-gray-400">
                 Adjust the simulation inputs to test how simple modifications in commute methods dramatically reduce annual emissions. The calculator uses EPA compliance factors.
