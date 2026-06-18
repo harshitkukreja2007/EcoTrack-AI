@@ -4,6 +4,20 @@ EcoTrack AI is a gamified carbon footprint calculator, habits logger, and person
 
 ---
 
+## Key Features
+
+- Carbon Footprint Calculator
+- AI-Powered Sustainability Insights
+- Daily and Weekly Eco Challenges
+- Habit Tracking and Streak System
+- XP, Levels, and Achievement Badges
+- Firebase Authentication
+- Firestore Cloud Sync
+- Historical Progress Analytics
+- Responsive and Accessible User Interface
+
+---
+
 ## 🏛️ PromptWars Submission Details
 
 ### 1. Problem Statement
@@ -33,7 +47,7 @@ EcoTrack AI is a gamified carbon footprint calculator, habits logger, and person
 
 ### 5. Assumptions Made
 * **Baseline Carbon Factors**: Employs global averages (e.g., Grid intensity: 0.38 kg/kWh; Gasoline travel: 0.18 kg/km; Average meat diet: 2.5 Tons/yr).
-* **Rate Limits**: Assumes the API key uses the free-tier quota (20 RPD for GCP keys or 1500 RPD for AI Studio developer keys) and gracefully displays a clear "AI insights are temporarily unavailable" message if exceeded.
+* **Rate Limits**: Assumes the configured Gemini API key is operating within its available quota limits. If quota is exceeded or the AI service is temporarily unavailable, the application displays a clear user-facing error message.
 * **Session Persistence**: Assumes standard browser cookies/IndexedDB support to manage session persistency via Firebase.
 
 ---
