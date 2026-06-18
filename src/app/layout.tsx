@@ -16,9 +16,6 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "EcoTrack AI | Futuristic Carbon Tracker & Sustainability Engine",
   description: "Calculate, analyze, and reduce your carbon footprint with AI insights, gamified challenges, and real-time sustainability metrics.",
-  icons: {
-    icon: "/favicon.ico",
-  },
 };
 
 export default function RootLayout({
