@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useEco } from "@/context/EcoContext";
 import { 
   Edit2, 
@@ -25,6 +25,10 @@ export default function UserProfileView() {
   const [usernameInput, setUsernameInput] = useState(profile.username);
   const [isEditing, setIsEditing] = useState(false);
   const [saveNotify, setSaveNotify] = useState(false);
+
+  useEffect(() => {
+    setUsernameInput(profile.username);
+  }, [profile.username]);
 
   // Determine Level Rank Title
   const getRankTitle = (lvl: number) => {
