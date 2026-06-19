@@ -8,16 +8,18 @@ import ProgressDashboard from "@/components/ProgressDashboard";
 import EcoChallenges from "@/components/EcoChallenges";
 import UserProfileView from "@/components/UserProfileView";
 import AuthView from "@/components/AuthView";
+import WhatIfSimulator from "@/components/WhatIfSimulator";
 import { useEco } from "@/context/EcoContext";
 import { 
   Calculator, 
   BrainCircuit, 
   LineChart, 
   Trophy, 
-  User 
+  User,
+  Sliders
 } from "lucide-react";
 
-type TabId = "calculator" | "insights" | "progress" | "challenges" | "profile";
+type TabId = "calculator" | "whatif" | "insights" | "progress" | "challenges" | "profile";
 
 export default function Dashboard() {
   const { user, authLoading, carbonBreakdown, calculatorData } = useEco();
@@ -113,6 +115,7 @@ export default function Dashboard() {
   // Navigation Options
   const navItems = [
     { id: "calculator", label: "Footprint Calculator", icon: Calculator, desc: "Log carbon variables" },
+    { id: "whatif", label: "What-If Simulator", icon: Sliders, desc: "Simulate lifestyle swaps" },
     { id: "insights", label: "AI Eco Insights", icon: BrainCircuit, desc: "Personalized recommendations" },
     { id: "progress", label: "Progress & History", icon: LineChart, desc: "Streak, charts & badges" },
     { id: "challenges", label: "Challenges & Habits", icon: Trophy, desc: "Daily habits & missions" },
@@ -123,6 +126,8 @@ export default function Dashboard() {
     switch (activeTab) {
       case "calculator":
         return <CarbonCalculator />;
+      case "whatif":
+        return <WhatIfSimulator />;
       case "insights":
         return <AIInsights />;
       case "progress":

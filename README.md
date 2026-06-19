@@ -7,6 +7,7 @@ EcoTrack AI is a gamified carbon footprint calculator, habits logger, and person
 ## Key Features
 
 - Carbon Footprint Calculator
+- What-If Lifestyle Simulator
 - AI-Powered Sustainability Insights
 - Daily and Weekly Eco Challenges
 - Habit Tracking and Streak System
@@ -44,6 +45,11 @@ EcoTrack AI is a gamified carbon footprint calculator, habits logger, and person
 4. **Interactive Tracking**:
    - **Habits Tracker**: Toggling daily tasks (e.g., *Commuting by bike*) updates XP progress and updates the user's active streak.
    - **Progress Graphs**: Clicking **Log Footprint Audit** commits the current month's audit to a historical list. An SVG chart plots the trend and calculates month-over-month improvements.
+5. **What-If Simulator & Caching Architecture**:
+   - **Lifestyle Simulations**: Users can adjust sliders representing transport distance, drive specification, diet patterns, electricity usage, renewable energy share, clothing/tech purchases, and waste methods.
+   - **EPA-Compliant Local Calculations**: Employs EPA compliance emission factors to recalculate the simulated carbon breakdown and Eco Score instantly on the client side, avoiding unnecessary backend AI queries.
+   - **LocalStorage Scenario Caching**: The simulator checks `localStorage` cache maps using parameter-specific hashes as keys before invoking server-side AI evaluations. If a scenario is analyzed once, subsequent views retrieve the response instantly from `localStorage`.
+   - **Firestore Scope Isolation**: In accordance with privacy and storage segregation policies, AI scenario analysis cache entries are stored **only** inside the client browser's `localStorage` and are never written to Firestore. Cloud Firestore continues storing user profiles, daily habits logs, active challenges progress, unlocked badges, and monthly audit history entries only.
 
 ### 5. Assumptions Made
 * **Baseline Carbon Factors**: Employs global averages (e.g., Grid intensity: 0.38 kg/kWh; Gasoline travel: 0.18 kg/km; Average meat diet: 2.5 Tons/yr).

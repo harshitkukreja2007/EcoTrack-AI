@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { onAuthStateChanged, User } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
+import { calculateCarbonFootprint, calculateEcoScore } from "@/lib/carbonUtils";
 
 // Interfaces
 export interface CalculatorData {
@@ -270,63 +271,7 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [history, saveField]);
 
   // Carbon Emission Models (Annual Metric Tons CO2e)
-  const calculateCarbon = () => {
-    // 1. Transportation
-    let transportFactor = 0.18; // kg/km (gasoline)
-    if (calculatorData.transportType === "diesel") transportFactor = 0.17;
-    else if (calculatorData.transportType === "hybrid") transportFactor = 0.10;
-    else if (calculatorData.transportType === "electric") transportFactor = 0.04;
-    else if (calculatorData.transportType === "public") transportFactor = 0.05;
-    else if (calculatorData.transportType === "bike_walk") transportFactor = 0;
-
-    const transportEmissions = (calculatorData.transportDistance * 52 * transportFactor) / 1000;
-
-    // 2. Electricity
-    const gridIntensity = 0.38; // kg CO2/kWh
-    const electricityEmissions = 
-      (calculatorData.electricityUsage * 12 * gridIntensity * (1 - calculatorData.renewableRatio / 100)) / 1000;
-
-    // 3. Diet
-    let dietBase = 2.5; // tons/year (average meat eater)
-    if (calculatorData.dietType === "heavy_meat") dietBase = 3.3;
-    else if (calculatorData.dietType === "pescatarian") dietBase = 2.0;
-    else if (calculatorData.dietType === "vegetarian") dietBase = 1.7;
-    else if (calculatorData.dietType === "vegan") dietBase = 1.5;
-
-    // Local food ratio discount (reduces up to 10% of diet footprint)
-    const dietEmissions = dietBase * (1 - 0.1 * (calculatorData.localFoodRatio / 100));
-
-    // 4. Shopping
-    const clothingEmissions = (calculatorData.shoppingClothing * 12 * 15) / 1000; // 15kg CO2 per clothing item
-    const techEmissions = (calculatorData.shoppingTech * 150) / 1000; // 150kg CO2 per tech item
-    const shoppingEmissions = clothingEmissions + techEmissions;
-
-    // 5. Waste & Lifestyle
-    let wasteBase = 0.8; // tons/year
-    if (calculatorData.wasteRecycling) wasteBase -= 0.15;
-    if (calculatorData.wasteComposting) wasteBase -= 0.10;
-    const wasteEmissions = Math.max(0.2, wasteBase);
-
-    const totalEmissions = transportEmissions + electricityEmissions + dietEmissions + shoppingEmissions + wasteEmissions;
-
-    return {
-      transport: parseFloat(transportEmissions.toFixed(2)),
-      electricity: parseFloat(electricityEmissions.toFixed(2)),
-      diet: parseFloat(dietEmissions.toFixed(2)),
-      shopping: parseFloat(shoppingEmissions.toFixed(2)),
-      waste: parseFloat(wasteEmissions.toFixed(2)),
-      total: parseFloat(totalEmissions.toFixed(2)),
-    };
-  };
-
-  const carbonBreakdown = calculateCarbon();
-
-  // Eco Score: Higher footprint -> lower score.
-  // 2.0 tons -> ~100. 16.0+ tons -> ~10.
-  const calculateEcoScore = (totalCo2: number) => {
-    return Math.max(10, Math.min(100, Math.round(100 - (totalCo2 / 16.0) * 85)));
-  };
-
+  const carbonBreakdown = calculateCarbonFootprint(calculatorData);
   const ecoScore = calculateEcoScore(carbonBreakdown.total);
 
   // Helper: Trigger unlocks when credentials change
