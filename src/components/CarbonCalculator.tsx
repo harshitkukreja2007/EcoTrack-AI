@@ -20,6 +20,20 @@ export default function CarbonCalculator() {
   const [activeSubTab, setActiveSubTab] = useState<CategoryTab>("transport");
   const [saveSuccess, setSaveSuccess] = useState(false);
 
+  const [scorePulse, setScorePulse] = useState(false);
+  const [prevScore, setPrevScore] = useState(ecoScore);
+
+  React.useEffect(() => {
+    if (ecoScore > prevScore) {
+      setScorePulse(true);
+      const timer = setTimeout(() => setScorePulse(false), 800);
+      setPrevScore(ecoScore);
+      return () => clearTimeout(timer);
+    } else if (ecoScore < prevScore) {
+      setPrevScore(ecoScore);
+    }
+  }, [ecoScore, prevScore]);
+
   // Constants
   const AVG_FOOTPRINT = 12.0; // National baseline average in Tons
   const targetPercent = Math.max(0, Math.round(((AVG_FOOTPRINT - carbonBreakdown.total) / AVG_FOOTPRINT) * 100));
@@ -140,10 +154,10 @@ export default function CarbonCalculator() {
                       aria-checked={calculatorData.transportType === type.id}
                       suppressHydrationWarning
                       onClick={() => updateCalculator({ transportType: type.id as CalculatorData["transportType"] })}
-                      className={`glass-panel rounded-xl p-4 text-left border transition-all duration-300 flex flex-col justify-between h-28 ${
+                      className={`glass-panel rounded-xl p-4 text-left border transition-all duration-300 flex flex-col justify-between h-28 glass-panel-hover ${
                         calculatorData.transportType === type.id
-                          ? "bg-eco-green/10 border-eco-green text-eco-green-light shadow-[0_0_15px_rgba(16,185,129,0.1)]"
-                          : "border-transparent hover:border-gray-800 hover:bg-white/5"
+                          ? "bg-eco-green/5 border-eco-green/20 text-eco-green-light"
+                          : "border-transparent hover:border-gray-800/60 hover:bg-white/5"
                       }`}
                     >
                       <span className="text-sm font-bold block">{type.name}</span>
@@ -262,10 +276,10 @@ export default function CarbonCalculator() {
                       aria-checked={calculatorData.dietType === type.id}
                       suppressHydrationWarning
                       onClick={() => updateCalculator({ dietType: type.id as CalculatorData["dietType"] })}
-                      className={`glass-panel rounded-xl p-3 text-left border transition-all duration-300 flex flex-col justify-between h-28 ${
+                      className={`glass-panel rounded-xl p-3 text-left border transition-all duration-300 flex flex-col justify-between h-28 glass-panel-hover ${
                         calculatorData.dietType === type.id
-                          ? "bg-eco-green/10 border-eco-green text-eco-green-light shadow-[0_0_15px_rgba(16,185,129,0.1)]"
-                          : "border-transparent hover:border-gray-800 hover:bg-white/5"
+                          ? "bg-eco-green/5 border-eco-green/20 text-eco-green-light"
+                          : "border-transparent hover:border-gray-800/60 hover:bg-white/5"
                       }`}
                     >
                       <span className="text-xs font-bold block leading-tight">{type.name}</span>
@@ -463,7 +477,9 @@ export default function CarbonCalculator() {
           </span>
 
           {/* Carbon Score Dial Graphic */}
-          <div className="relative flex items-center justify-center h-44 w-44">
+          <div className={`relative flex items-center justify-center h-44 w-44 rounded-full transition-all duration-300 ${
+            scorePulse ? "animate-eco-halo" : ""
+          }`}>
             {/* SVG Ring background */}
             <svg className="w-full h-full transform -rotate-90">
               <circle

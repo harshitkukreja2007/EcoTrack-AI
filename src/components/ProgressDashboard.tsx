@@ -249,48 +249,47 @@ export default function ProgressDashboard() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {badges.map((badge) => (
-              <div
-                key={badge.id}
-                className={`glass-panel rounded-2xl p-4 flex flex-col items-center text-center justify-between border relative overflow-hidden transition-all duration-300 ${
-                  badge.unlocked
-                    ? "bg-eco-green/5 border-eco-green/20 hover:shadow-[0_0_15px_rgba(16,185,129,0.1)]"
-                    : "border-gray-800/80 bg-gray-900/10 opacity-50"
-                }`}
-              >
-                {!badge.unlocked && (
-                  <div className="absolute top-2 right-2 text-gray-600">
-                    <Lock className="h-3.5 w-3.5" />
+            {badges.map((badge) => {
+              const glowClass = badge.unlocked ? "animate-badge-glow border-eco-green/15" : "border-gray-800/60 opacity-50 bg-gray-900/5";
+              return (
+                <div
+                  key={badge.id}
+                  className={`glass-panel glass-panel-hover rounded-2xl p-4 flex flex-col items-center text-center justify-between border relative overflow-hidden transition-all duration-300 ${glowClass}`}
+                >
+                  {!badge.unlocked && (
+                    <div className="absolute top-2 right-2 text-gray-600">
+                      <Lock className="h-3.5 w-3.5" />
+                    </div>
+                  )}
+
+                  <span className="text-4xl block my-2 filter transition-all duration-300 group-hover:scale-110">
+                    {badge.icon}
+                  </span>
+
+                  <div className="space-y-1">
+                    <span className="text-xs font-bold text-white block">{badge.name}</span>
+                    <span className="text-[10px] text-gray-500 font-sans leading-tight block line-clamp-2">
+                      {badge.description}
+                    </span>
                   </div>
-                )}
 
-                <span className="text-4xl block my-2 filter transition-all duration-300 group-hover:scale-110">
-                  {badge.icon}
-                </span>
-
-                <div className="space-y-1">
-                  <span className="text-xs font-bold text-white block">{badge.name}</span>
-                  <span className="text-[10px] text-gray-500 font-sans leading-tight block line-clamp-2">
-                    {badge.description}
-                  </span>
+                  {badge.unlocked && badge.unlockedAt && (
+                    <span className="text-[9px] font-mono text-eco-green mt-3 bg-eco-green/10 px-2 py-0.5 rounded border border-eco-green/10">
+                      Unlocked: {badge.unlockedAt}
+                    </span>
+                  )}
                 </div>
-
-                {badge.unlocked && badge.unlockedAt && (
-                  <span className="text-[9px] font-mono text-eco-green mt-3 bg-eco-green/10 px-2 py-0.5 rounded border border-eco-green/10">
-                    Unlocked: {badge.unlockedAt}
-                  </span>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        {/* Challenge History Box (NEW) */}
+        {/* Completed Goals Archive Box */}
         <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Trophy className="h-5 w-5 text-eco-green" />
-              <h3 className="text-lg font-bold text-white">Challenge History</h3>
+              <h3 className="text-lg font-bold text-white">Completed Goals Archive</h3>
             </div>
             <span className="text-xs font-semibold text-eco-green bg-eco-green/15 rounded-full px-2.5 py-0.5 border border-eco-green/25 font-mono">
               Completions: {totalCompleted}

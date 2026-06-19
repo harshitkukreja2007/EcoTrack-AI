@@ -118,11 +118,11 @@ export default function Dashboard() {
 
   // Navigation Options
   const navItems = [
-    { id: "calculator", label: "Footprint Calculator", icon: Calculator, desc: "Log carbon variables" },
+    { id: "calculator", label: "My Carbon Habits", icon: Calculator, desc: "Log carbon variables" },
     { id: "whatif", label: "What-If Simulator", icon: Sliders, desc: "Simulate lifestyle swaps" },
-    { id: "insights", label: "AI Eco Insights", icon: BrainCircuit, desc: "Personalized recommendations" },
-    { id: "progress", label: "Progress & History", icon: LineChart, desc: "Streak, charts & badges" },
-    { id: "challenges", label: "Challenges & Habits", icon: Trophy, desc: "Daily habits & missions" },
+    { id: "insights", label: "AI-Powered Recommendations", icon: BrainCircuit, desc: "Personalized recommendations" },
+    { id: "progress", label: "My Progress & Rewards", icon: LineChart, desc: "Streak, charts & badges" },
+    { id: "challenges", label: "Goals & Daily Actions", icon: Trophy, desc: "Daily habits & missions" },
     { id: "profile", label: "Eco Profile", icon: User, desc: "Level & stats showcase" },
   ] as const;
 
@@ -171,9 +171,8 @@ export default function Dashboard() {
     return (
       <div className="relative min-h-screen bg-eco-bg text-gray-100 flex flex-col">
         {/* Background aesthetics */}
-        <div className="absolute inset-0 -z-20 bg-grid-cyber opacity-50"></div>
-        <div className="absolute top-10 right-10 -z-10 h-72 w-72 rounded-full bg-eco-green/5 blur-[100px] pointer-events-none"></div>
-        <div className="absolute bottom-10 left-10 -z-10 h-80 w-80 rounded-full bg-eco-cyan/5 blur-[120px] pointer-events-none"></div>
+        <div className="absolute inset-0 -z-10 h-full w-full organic-glow-green blur-[130px] pointer-events-none"></div>
+        <div className="absolute inset-0 -z-10 h-full w-full organic-glow-cyan blur-[130px] pointer-events-none"></div>
 
         <Navbar />
         <div className="flex-1 flex items-center justify-center py-12">
@@ -186,14 +185,13 @@ export default function Dashboard() {
   return (
     <div className="relative min-h-screen bg-eco-bg text-gray-100 flex flex-col">
       {/* Background aesthetics */}
-      <div className="absolute inset-0 -z-20 bg-grid-cyber opacity-50"></div>
-      <div className="absolute top-10 right-10 -z-10 h-72 w-72 rounded-full bg-eco-green/5 blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-10 left-10 -z-10 h-80 w-80 rounded-full bg-eco-cyan/5 blur-[120px] pointer-events-none"></div>
+      <div className="absolute inset-0 -z-10 h-full w-full organic-glow-green blur-[130px] pointer-events-none"></div>
+      <div className="absolute inset-0 -z-10 h-full w-full organic-glow-cyan blur-[130px] pointer-events-none"></div>
 
       <Navbar />
 
       {/* Main Dashboard Content Wrapper */}
-      <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col lg:flex-row px-4 sm:px-6 lg:px-8 py-6 gap-6">
+      <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col lg:flex-row px-4 sm:px-6 lg:px-8 py-8 gap-8">
         
         {/* Left Sidebar Navigation (Desktop) */}
         <aside className="hidden lg:flex flex-col w-64 shrink-0 gap-2">
@@ -273,11 +271,11 @@ export default function Dashboard() {
         {/* Content Panel Area */}
         <main className="flex-1 min-w-0 flex flex-col gap-6">
           {smartReminder && (
-            <div className="glass-panel rounded-2xl p-4 border-eco-cyan/15 bg-eco-cyan/5 relative overflow-hidden flex items-start gap-3 animate-fadeIn">
-              <div className="absolute top-0 left-0 w-1 h-full bg-eco-cyan"></div>
+            <div className="glass-panel rounded-2xl p-4 border-eco-amber/20 bg-eco-amber/5 relative overflow-hidden flex items-start gap-3 animate-fadeIn">
+              <div className="absolute top-0 left-0 w-1 h-full bg-eco-amber"></div>
               <span className="text-lg">💡</span>
               <div className="flex-1">
-                <span className="text-xs font-mono text-gray-500 uppercase tracking-widest block mb-0.5">Smart Nudge</span>
+                <span className="text-xs font-mono text-gray-500 uppercase tracking-widest block mb-0.5">Friendly Tip</span>
                 <p className="text-xs text-gray-300 leading-relaxed">{smartReminder.text}</p>
               </div>
             </div>

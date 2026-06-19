@@ -22,6 +22,37 @@ export default function Navbar() {
   const nextLvlXp = profile.level * 100;
   const xpPercentage = Math.round((profile.xp / nextLvlXp) * 100);
 
+  const [xpPulse, setXpPulse] = useState(false);
+  const [streakPulse, setStreakPulse] = useState(false);
+  const [prevXp, setPrevXp] = useState(profile.xp);
+  const [prevStreak, setPrevStreak] = useState(profile.streak);
+
+  useEffect(() => {
+    if (profile.xp > prevXp) {
+      setXpPulse(true);
+      const timer = setTimeout(() => setXpPulse(false), 500);
+      setPrevXp(profile.xp);
+      return () => clearTimeout(timer);
+    } else if (profile.xp < prevXp) {
+      setPrevXp(profile.xp);
+    }
+  }, [profile.xp, prevXp]);
+
+  useEffect(() => {
+    if (profile.streak > prevStreak) {
+      const isMilestone = [3, 7, 14, 30, 50, 100].includes(profile.streak);
+      if (isMilestone) {
+        setStreakPulse(true);
+        const timer = setTimeout(() => setStreakPulse(false), 900);
+        setPrevStreak(profile.streak);
+        return () => clearTimeout(timer);
+      }
+      setPrevStreak(profile.streak);
+    } else if (profile.streak < prevStreak) {
+      setPrevStreak(profile.streak);
+    }
+  }, [profile.streak, prevStreak]);
+
   const handleReset = () => {
     if (confirm("Are you sure you want to reset all your progress, profile level, streaks, and calculator records? This cannot be undone.")) {
       resetAllData();
@@ -87,8 +118,10 @@ export default function Navbar() {
           {isDashboard && user ? (
             <>
               {/* Streak */}
-              <div className="flex items-center gap-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20 px-3 py-1 text-sm font-medium text-orange-400">
-                <Flame className="h-4 w-4 fill-orange-500 text-orange-500 animate-pulse" />
+              <div className={`flex items-center gap-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20 px-3 py-1 text-sm font-medium text-orange-400 transition-all duration-300 ${
+                streakPulse ? "animate-streak-glow border-orange-500/50 scale-105" : ""
+              }`}>
+                <Flame className={`h-4 w-4 fill-orange-500 text-orange-500 ${streakPulse ? "animate-bounce" : "animate-pulse"}`} />
                 <span>{profile.streak} Day{profile.streak !== 1 && "s"}</span>
               </div>
 
@@ -99,13 +132,17 @@ export default function Navbar() {
               </div>
 
               {/* Level Progress */}
-              <div className="flex flex-col items-end gap-1">
+              <div className={`flex flex-col items-end gap-1 transition-all duration-300 ${
+                xpPulse ? "scale-105" : ""
+              }`}>
                 <div className="flex items-center gap-1.5 text-xs sm:text-sm">
                   <ShieldCheck className="h-3.5 w-3.5 text-eco-cyan" />
                   <span className="font-semibold text-white">Lvl {profile.level}</span>
-                  <span className="text-gray-400 hidden sm:inline">({profile.xp}/{nextLvlXp} XP)</span>
+                  <span className={`text-gray-400 hidden sm:inline transition-all ${
+                    xpPulse ? "text-eco-green-light font-bold animate-pulse-scale" : ""
+                  }`}>({profile.xp}/{nextLvlXp} XP)</span>
                 </div>
-                <div className="h-1.5 w-24 sm:w-32 overflow-hidden rounded-full bg-eco-dark border border-gray-800">
+                <div className="h-1.5 w-24 sm:w-32 overflow-hidden rounded-full bg-[#0a1114] border border-gray-800/60">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-eco-green to-eco-cyan transition-all duration-500"
                     style={{ width: `${xpPercentage}%` }}

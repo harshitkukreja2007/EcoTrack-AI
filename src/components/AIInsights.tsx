@@ -192,12 +192,12 @@ export default function AIInsights() {
               return (
                 <div 
                   key={idx} 
-                  className="glass-panel rounded-2xl p-5 border-gray-800/80 hover:border-eco-cyan/20 transition-all duration-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
+                  className="glass-panel glass-panel-hover rounded-2xl p-5 border-gray-800/60 hover:border-eco-cyan/20 transition-all duration-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
                 >
                   <div className="space-y-1.5 max-w-lg">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-bold text-white">{rec.title}</span>
-                      <span className="text-[10px] font-mono font-semibold bg-eco-green/10 text-eco-green-light border border-eco-green/20 px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-mono font-semibold bg-eco-green/10 text-eco-green-light border border-eco-green/15 px-2 py-0.5 rounded-full">
                         -{rec.offset} Tons CO2/yr
                       </span>
                     </div>
@@ -208,10 +208,10 @@ export default function AIInsights() {
                   <button
                     onClick={() => handleAdopt(rec.title)}
                     disabled={isDone}
-                    className={`rounded-xl px-5 py-2.5 text-xs font-bold shrink-0 transition-all duration-300 flex items-center gap-1.5 ${
+                    className={`rounded-xl px-5 py-2.5 text-xs font-bold shrink-0 transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${
                       isDone 
-                        ? "bg-eco-cyan/15 text-eco-cyan-light border border-eco-cyan/30" 
-                        : "bg-eco-cyan/10 border border-eco-cyan/20 text-eco-cyan hover:bg-eco-cyan/25 hover:border-eco-cyan/50"
+                        ? "bg-eco-cyan/15 text-eco-cyan-light border border-eco-cyan/20 animate-checkmark-pop" 
+                        : "bg-eco-cyan/10 border border-eco-cyan/15 text-eco-cyan hover:bg-eco-cyan/20 hover:border-eco-cyan/35"
                     }`}
                   >
                     {isDone ? (
@@ -253,12 +253,12 @@ export default function AIInsights() {
                     onClick={() => toggleDay(plan.day)}
                     className={`glass-panel rounded-2xl p-4 border cursor-pointer select-none transition-all duration-300 flex items-start text-left w-full gap-3 ${
                       isCompleted 
-                        ? "bg-eco-green/10 border-eco-green text-eco-green-light" 
-                        : "border-gray-800/80 text-gray-400 hover:border-gray-700/80 hover:bg-white/5"
+                        ? "bg-eco-green/5 border-eco-green/20 text-eco-green-light" 
+                        : "border-gray-800/60 text-gray-400 hover:border-gray-700/60 hover:bg-white/5 hover:-translate-y-0.5"
                     }`}
                   >
                     <div className={`h-5 w-5 rounded border flex items-center justify-center transition-all duration-200 mt-0.5 shrink-0 ${
-                      isCompleted ? "border-eco-green bg-eco-green text-eco-bg" : "border-gray-600"
+                      isCompleted ? "border-eco-green bg-eco-green text-eco-bg animate-checkmark-pop" : "border-gray-600"
                     }`}>
                       {isCompleted && <CheckCircle className="h-3.5 w-3.5" />}
                     </div>

@@ -188,10 +188,10 @@ export default function WhatIfSimulator() {
                       key={type.id}
                       type="button"
                       onClick={() => handleSliderChange("transportType", type.id)}
-                      className={`py-2 text-[10px] sm:text-xs font-semibold rounded-xl border transition-all duration-200 ${
+                      className={`py-2 text-[10px] sm:text-xs font-semibold rounded-xl border transition-all duration-200 glass-panel-hover cursor-pointer ${
                         simInputs.transportType === type.id
-                          ? "bg-eco-green/10 border-eco-green text-eco-green-light"
-                          : "border-gray-800 bg-[#0d1321]/30 text-gray-400 hover:border-gray-700"
+                          ? "bg-eco-green/5 border-eco-green/20 text-eco-green-light"
+                          : "border-gray-800/60 bg-[#0d1321]/30 text-gray-400 hover:border-gray-750"
                       }`}
                     >
                       {type.name}
@@ -218,10 +218,10 @@ export default function WhatIfSimulator() {
                       key={type.id}
                       type="button"
                       onClick={() => handleSliderChange("dietType", type.id)}
-                      className={`py-2 text-[9px] sm:text-xs font-semibold rounded-xl border transition-all duration-200 ${
+                      className={`py-2 text-[9px] sm:text-xs font-semibold rounded-xl border transition-all duration-200 glass-panel-hover cursor-pointer ${
                         simInputs.dietType === type.id
-                          ? "bg-eco-green/10 border-eco-green text-eco-green-light"
-                          : "border-gray-800 bg-[#0d1321]/30 text-gray-400 hover:border-gray-700"
+                          ? "bg-eco-green/5 border-eco-green/20 text-eco-green-light"
+                          : "border-gray-800/60 bg-[#0d1321]/30 text-gray-400 hover:border-gray-750"
                       }`}
                     >
                       {type.name}
@@ -327,10 +327,10 @@ export default function WhatIfSimulator() {
                 <button
                   type="button"
                   onClick={() => handleSliderChange("wasteRecycling", !simInputs.wasteRecycling)}
-                  className={`py-3 text-xs font-semibold rounded-xl border transition-all duration-200 flex items-center justify-center gap-2 ${
+                  className={`py-3 text-xs font-semibold rounded-xl border transition-all duration-200 flex items-center justify-center gap-2 glass-panel-hover cursor-pointer ${
                     simInputs.wasteRecycling
-                      ? "bg-eco-green/10 border-eco-green text-eco-green-light"
-                      : "border-gray-800 bg-[#0d1321]/30 text-gray-400 hover:border-gray-700"
+                      ? "bg-eco-green/5 border-eco-green/20 text-eco-green-light"
+                      : "border-gray-800/60 bg-[#0d1321]/30 text-gray-400 hover:border-gray-750"
                   }`}
                 >
                   <CheckCircle className="h-4 w-4" />
@@ -339,10 +339,10 @@ export default function WhatIfSimulator() {
                 <button
                   type="button"
                   onClick={() => handleSliderChange("wasteComposting", !simInputs.wasteComposting)}
-                  className={`py-3 text-xs font-semibold rounded-xl border transition-all duration-200 flex items-center justify-center gap-2 ${
+                  className={`py-3 text-xs font-semibold rounded-xl border transition-all duration-200 flex items-center justify-center gap-2 glass-panel-hover cursor-pointer ${
                     simInputs.wasteComposting
-                      ? "bg-eco-green/10 border-eco-green text-eco-green-light"
-                      : "border-gray-800 bg-[#0d1321]/30 text-gray-400 hover:border-gray-700"
+                      ? "bg-eco-green/5 border-eco-green/20 text-eco-green-light"
+                      : "border-gray-800/60 bg-[#0d1321]/30 text-gray-400 hover:border-gray-750"
                   }`}
                 >
                   <CheckCircle className="h-4 w-4" />
@@ -385,7 +385,9 @@ export default function WhatIfSimulator() {
             <div className="grid grid-cols-2 gap-3">
               
               {/* CO2 savings metric */}
-              <div className={`rounded-xl p-3 border flex flex-col items-center justify-center text-center ${diffBgClass}`}>
+              <div className={`rounded-xl p-3 border flex flex-col items-center justify-center text-center ${
+                isSaving ? "bg-eco-green/5 border-eco-green/15" : co2Diff > 0 ? "bg-red-500/5 border-red-500/15" : "bg-gray-800/20 border-gray-700/20"
+              }`}>
                 <span className="text-[9px] font-mono text-gray-500 uppercase tracking-wider block mb-1">Net CO2 Change</span>
                 <div className="flex items-center gap-1">
                   {isSaving ? <TrendingDown className="h-3.5 w-3.5 text-eco-green" /> : co2Diff > 0 ? <TrendingUp className="h-3.5 w-3.5 text-red-400" /> : null}
@@ -398,10 +400,10 @@ export default function WhatIfSimulator() {
               {/* Eco Score shift metric */}
               <div className={`rounded-xl p-3 border flex flex-col items-center justify-center text-center ${
                 ecoScoreDiff > 0 
-                  ? "bg-eco-green/10 border-eco-green/20" 
+                  ? "bg-eco-green/5 border-eco-green/15" 
                   : ecoScoreDiff < 0 
-                    ? "bg-red-500/10 border-red-500/20" 
-                    : "bg-gray-800/40 border-gray-700/40"
+                    ? "bg-red-500/5 border-red-500/15" 
+                    : "bg-gray-800/20 border-gray-700/20"
               }`}>
                 <span className="text-[9px] font-mono text-gray-500 uppercase tracking-wider block mb-1">Score Shift</span>
                 <span className={`text-base font-extrabold font-mono ${
@@ -499,7 +501,7 @@ export default function WhatIfSimulator() {
           {!loading && (
             <button
               onClick={handleGenerateAI}
-              className="w-full py-3 rounded-xl bg-eco-green/10 border border-eco-green/20 text-eco-green hover:bg-eco-green/20 hover:border-eco-green/45 text-xs font-bold transition-all duration-200 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-eco-green/5 border border-eco-green/15 text-eco-green hover:bg-eco-green/10 hover:border-eco-green/30 text-xs font-bold transition-all duration-205 flex items-center justify-center gap-2 cursor-pointer transform active:scale-[0.98]"
             >
               <Sparkles className="h-3.5 w-3.5" />
               <span>{aiAnalysis ? "Refresh AI Analysis" : "Generate AI Scenario Analysis"}</span>
