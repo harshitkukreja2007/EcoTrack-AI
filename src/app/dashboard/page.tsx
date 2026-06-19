@@ -22,9 +22,13 @@ import {
 type TabId = "calculator" | "whatif" | "insights" | "progress" | "challenges" | "profile";
 
 export default function Dashboard() {
-  const { user, authLoading, carbonBreakdown, calculatorData } = useEco();
+  const { user, authLoading, carbonBreakdown, calculatorData, challengeHistory } = useEco();
   const [activeTab, setActiveTab] = useState<TabId>("calculator");
   const [mounted, setMounted] = useState(false);
+
+  const lastChallenge = challengeHistory && challengeHistory.length > 0
+    ? [...challengeHistory].sort((a, b) => b.completedTimestamp - a.completedTimestamp)[0]
+    : null;
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -219,6 +223,27 @@ export default function Dashboard() {
               );
             })}
           </div>
+
+          {/* Compact Last Completed Challenge Widget (Desktop) */}
+          {lastChallenge && (
+            <div className="glass-panel rounded-2xl p-4 border-eco-green/15 bg-eco-green/5 relative overflow-hidden flex flex-col gap-2 animate-fadeIn">
+              <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-eco-green/5 blur-lg"></div>
+              <div className="flex items-center justify-between">
+                <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">
+                  Last Completed
+                </span>
+                <span className="text-[9px] bg-eco-green/20 text-eco-green px-2 py-0.5 rounded-full font-semibold">
+                  +{lastChallenge.xpReward} XP
+                </span>
+              </div>
+              <div className="font-semibold text-xs text-gray-100 truncate" title={lastChallenge.name}>
+                {lastChallenge.name}
+              </div>
+              <div className="text-[9px] text-gray-400">
+                Completed in {lastChallenge.completedAt}
+              </div>
+            </div>
+          )}
         </aside>
 
         {/* Top Scrollable Tab Navigation (Mobile/Tablet) */}
@@ -254,6 +279,27 @@ export default function Dashboard() {
               <div className="flex-1">
                 <span className="text-xs font-mono text-gray-500 uppercase tracking-widest block mb-0.5">Smart Nudge</span>
                 <p className="text-xs text-gray-300 leading-relaxed">{smartReminder.text}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Compact Last Completed Challenge Widget (Mobile) */}
+          {lastChallenge && (
+            <div className="lg:hidden glass-panel rounded-2xl p-4 border-eco-green/15 bg-eco-green/5 relative overflow-hidden flex items-center justify-between animate-fadeIn">
+              <div className="flex items-center gap-3">
+                <div className="bg-eco-green/15 p-2 rounded-xl text-sm shrink-0">🏆</div>
+                <div className="min-w-0">
+                  <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest block">Last Completed Challenge</span>
+                  <span className="text-xs font-semibold text-gray-100 block truncate" title={lastChallenge.name}>
+                    {lastChallenge.name}
+                  </span>
+                </div>
+              </div>
+              <div className="text-right shrink-0">
+                <span className="text-[10px] bg-eco-green/20 text-eco-green px-2 py-0.5 rounded-lg font-semibold block mb-0.5">
+                  +{lastChallenge.xpReward} XP
+                </span>
+                <span className="text-[9px] text-gray-400 block">{lastChallenge.completedAt}</span>
               </div>
             </div>
           )}

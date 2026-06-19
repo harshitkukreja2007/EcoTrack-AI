@@ -11,10 +11,11 @@ import {
 } from "lucide-react";
 
 export default function ProgressDashboard() {
-  const { history, profile, badges } = useEco();
+  const { history, profile, badges, challengeHistory, longestChallengeStreak, weeklyChallengesStreak } = useEco();
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
 
-  // Calculate month-over-month trend
+  // Calculate MoM Trend
   const getMoMTrend = () => {
     if (!history || history.length < 2) return null;
     const current = history[history.length - 1];
@@ -30,6 +31,39 @@ export default function ProgressDashboard() {
 
   const momTrend = getMoMTrend();
 
+  // Stats Calculations
+  const totalCompleted = challengeHistory.length;
+  const totalXpEarned = challengeHistory.reduce((sum, h) => sum + h.xpReward, 0);
+  const totalCo2Saved = challengeHistory.reduce((sum, h) => sum + h.co2Saved, 0);
+
+  const getMostCompletedCategory = () => {
+    if (challengeHistory.length === 0) return "None";
+    const counts: Record<string, number> = {};
+    challengeHistory.forEach((item) => {
+      const cat = item.category.toLowerCase();
+      counts[cat] = (counts[cat] || 0) + 1;
+    });
+    let maxCat = "None";
+    let maxCount = 0;
+    Object.entries(counts).forEach(([cat, count]) => {
+      if (count > maxCount) {
+        maxCount = count;
+        maxCat = cat;
+      }
+    });
+    return maxCat;
+  };
+
+  const favoriteCategory = getMostCompletedCategory();
+
+  // Filter history
+  const filteredHistory = challengeHistory
+    .filter((item) => {
+      if (selectedCategory === "all") return true;
+      return item.category.toLowerCase() === selectedCategory.toLowerCase();
+    })
+    .sort((a, b) => b.completedTimestamp - a.completedTimestamp);
+
   // SVG Chart Layout Metrics
   const chartWidth = 500;
   const chartHeight = 160;
@@ -40,10 +74,9 @@ export default function ProgressDashboard() {
   const renderChart = () => {
     if (!history || history.length === 0) return null;
 
-    // Find min/max values for scaling
     const co2Values = history.map((h) => h.co2Output);
-    const maxVal = Math.max(...co2Values, 12); // benchmark upper limit
-    const minVal = Math.min(...co2Values, 0); // floor baseline
+    const maxVal = Math.max(...co2Values, 12);
+    const minVal = Math.min(...co2Values, 0);
 
     const range = maxVal - minVal || 1;
     const points: { x: number; y: number; data: HistoryEntry }[] = [];
@@ -54,7 +87,6 @@ export default function ProgressDashboard() {
       points.push({ x, y, data: entry });
     });
 
-    // Create SVG Path line
     let linePath = "";
     let areaPath = "";
 
@@ -106,7 +138,6 @@ export default function ProgressDashboard() {
             </span>
           </div>
 
-          {/* SVG Line Chart Container */}
           <div className="relative w-full overflow-hidden">
             {history.length > 0 ? (
               <div className="w-full overflow-x-auto scrollbar-none">
@@ -115,7 +146,6 @@ export default function ProgressDashboard() {
                     viewBox={`0 0 ${chartWidth} ${chartHeight}`} 
                     className="w-full h-full overflow-visible"
                   >
-                    {/* Gradients */}
                     <defs>
                       <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
@@ -127,7 +157,6 @@ export default function ProgressDashboard() {
                       </linearGradient>
                     </defs>
 
-                    {/* Chart Grid Lines */}
                     <line 
                       x1={paddingX} y1={paddingY} 
                       x2={chartWidth - paddingX} y2={paddingY} 
@@ -146,10 +175,8 @@ export default function ProgressDashboard() {
 
                     {chartData && (
                       <>
-                        {/* Area Fill */}
                         <path d={chartData.areaPath} fill="url(#areaGradient)" />
 
-                        {/* Trend Line */}
                         <path 
                           d={chartData.linePath} 
                           fill="transparent" 
@@ -158,7 +185,6 @@ export default function ProgressDashboard() {
                           strokeLinecap="round" 
                         />
 
-                        {/* Interactive Data Nodes */}
                         {chartData.points.map((pt, idx) => (
                           <g key={idx}>
                             <circle
@@ -169,7 +195,6 @@ export default function ProgressDashboard() {
                               onMouseEnter={() => setHoveredPoint(idx)}
                               onMouseLeave={() => setHoveredPoint(null)}
                             />
-                            {/* X Axis labels */}
                             <text
                               x={pt.x}
                               y={chartHeight - 4}
@@ -191,7 +216,6 @@ export default function ProgressDashboard() {
               </div>
             )}
 
-            {/* Hover Tooltip Overlay */}
             {hoveredPoint !== null && chartData && (
               <div 
                 className="absolute bg-eco-dark/95 border border-eco-cyan/35 rounded-xl p-3 shadow-xl pointer-events-none text-xs flex flex-col gap-1.5 animate-fadeIn"
@@ -234,7 +258,6 @@ export default function ProgressDashboard() {
                     : "border-gray-800/80 bg-gray-900/10 opacity-50"
                 }`}
               >
-                {/* Lock indicator */}
                 {!badge.unlocked && (
                   <div className="absolute top-2 right-2 text-gray-600">
                     <Lock className="h-3.5 w-3.5" />
@@ -260,6 +283,110 @@ export default function ProgressDashboard() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Challenge History Box (NEW) */}
+        <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-6">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <Trophy className="h-5 w-5 text-eco-green" />
+              <h3 className="text-lg font-bold text-white">Challenge History</h3>
+            </div>
+            <span className="text-xs font-semibold text-eco-green bg-eco-green/15 rounded-full px-2.5 py-0.5 border border-eco-green/25 font-mono">
+              Completions: {totalCompleted}
+            </span>
+          </div>
+
+          {/* Historical Analytics Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 bg-[#0d1321]/30 border border-gray-800/80 rounded-2xl p-4">
+            <div className="flex flex-col justify-center">
+              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Completed</span>
+              <span className="text-base font-bold text-white font-mono">{totalCompleted}</span>
+            </div>
+            <div className="flex flex-col justify-center">
+              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Total XP</span>
+              <span className="text-base font-bold text-eco-cyan-light font-mono">+{totalXpEarned}</span>
+            </div>
+            <div className="flex flex-col justify-center">
+              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">CO2 Saved</span>
+              <span className="text-base font-bold text-eco-green-light font-mono">-{totalCo2Saved.toFixed(1)} kg</span>
+            </div>
+            <div className="flex flex-col justify-center">
+              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Streak</span>
+              <span className="text-base font-bold text-white font-mono">{longestChallengeStreak}w</span>
+              <span className="text-[8px] text-gray-500">Current: {weeklyChallengesStreak}w</span>
+            </div>
+            <div className="flex flex-col justify-center col-span-2 md:col-span-1">
+              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Fav Category</span>
+              <span className="text-[10px] font-bold text-white leading-tight capitalize truncate mt-1 bg-gray-800/50 px-2 py-0.5 rounded border border-gray-700/30 inline-block w-fit">{favoriteCategory}</span>
+            </div>
+          </div>
+
+          {/* Category Filter Chips */}
+          <div className="flex flex-wrap gap-1.5 py-1">
+            {[
+              { id: "all", label: "All" },
+              { id: "transport", label: "Transport" },
+              { id: "energy", label: "Energy" },
+              { id: "food", label: "Food" },
+              { id: "waste", label: "Waste" },
+              { id: "water", label: "Water" },
+              { id: "shopping", label: "Shopping" }
+            ].map(chip => (
+              <button
+                key={chip.id}
+                onClick={() => setSelectedCategory(chip.id)}
+                className={`px-3 py-1 text-[10px] sm:text-xs font-semibold rounded-lg border transition-all duration-200 uppercase tracking-wider ${
+                  selectedCategory === chip.id
+                    ? "bg-eco-green/10 border-eco-green text-eco-green-light"
+                    : "border-gray-800 bg-[#0d1321]/30 text-gray-400 hover:border-gray-700"
+                }`}
+              >
+                {chip.label}
+              </button>
+            ))}
+          </div>
+
+          {filteredHistory.length > 0 ? (
+            <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
+              {filteredHistory.map((item) => (
+                <div 
+                  key={item.id} 
+                  className="glass-panel rounded-2xl p-4 border-gray-800/80 hover:border-eco-green/25 transition-all duration-300 flex items-center justify-between gap-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-lg bg-eco-green/10 flex items-center justify-center text-eco-green shrink-0">
+                      <Trophy className="h-4.5 w-4.5" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-bold text-white leading-tight">{item.name}</span>
+                      <span className="text-[10px] text-gray-500 font-mono mt-0.5 uppercase tracking-wide">
+                        Category: {item.category} • Date: {item.completedAt}
+                      </span>
+                      {item.weekStart && item.weekEnd && (
+                        <span className="text-[8px] text-gray-600 font-mono mt-0.5">
+                          Cycle: {new Date(item.weekStart).toLocaleDateString("en-US", { month: "short", day: "numeric" })} - {new Date(item.weekEnd).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 text-right shrink-0">
+                    <span className="text-[9px] font-mono font-bold bg-eco-cyan/10 border border-eco-cyan/20 text-eco-cyan-light px-2.5 py-0.5 rounded-full whitespace-nowrap">
+                      +{item.xpReward} XP
+                    </span>
+                    <span className="text-[9px] font-mono font-bold bg-eco-green/10 border border-eco-green/20 text-eco-green-light px-2.5 py-0.5 rounded-full whitespace-nowrap">
+                      -{item.co2Saved} kg CO2
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="h-24 w-full rounded-2xl border border-dashed border-gray-800 flex items-center justify-center text-sm text-gray-500 text-center px-4">
+              No completed challenges found in this category. Accept weekly missions to earn awards!
+            </div>
+          )}
         </div>
 
       </div>
@@ -339,3 +466,4 @@ export default function ProgressDashboard() {
     </div>
   );
 }
+
