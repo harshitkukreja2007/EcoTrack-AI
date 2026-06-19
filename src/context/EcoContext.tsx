@@ -664,63 +664,52 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const toggleHabit = (id: string) => {
     const today = new Date().toDateString();
-    let co2ToSave = 0;
-    let xpToGain = 0;
+    const habit = habits.find((h) => h.id === id);
+    if (!habit) return;
+
+    const nextState = !habit.completed;
+    const co2ToSave = nextState ? habit.co2Saved : -habit.co2Saved;
+    const xpToGain = nextState ? habit.xpReward : -habit.xpReward;
 
     setHabits((prev) =>
-      prev.map((habit) => {
-        if (habit.id === id) {
-          const nextState = !habit.completed;
-          if (nextState) {
-            co2ToSave += habit.co2Saved;
-            xpToGain += habit.xpReward;
-          } else {
-            co2ToSave -= habit.co2Saved;
-            xpToGain -= habit.xpReward;
-          }
-          return { ...habit, completed: nextState };
-        }
-        return habit;
-      })
+      prev.map((h) => (h.id === id ? { ...h, completed: nextState } : h))
     );
 
-    if (co2ToSave !== 0 || xpToGain !== 0) {
-      setProfile((prev) => {
-        const isCompletedAction = co2ToSave > 0;
-        let nextStreak = prev.streak;
-        
-        if (isCompletedAction) {
-          if (prev.lastActiveDate !== today) {
-            const lastActive = prev.lastActiveDate ? new Date(prev.lastActiveDate) : null;
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            
-            if (!lastActive || lastActive.toDateString() === yesterday.toDateString()) {
-              nextStreak += 1;
-            } else if (lastActive.toDateString() !== today) {
-              nextStreak = 1;
-            }
+    setProfile((prev) => {
+      const isCompletedAction = co2ToSave > 0;
+      let nextStreak = prev.streak;
+      
+      if (isCompletedAction) {
+        if (prev.lastActiveDate !== today) {
+          const lastActive = prev.lastActiveDate ? new Date(prev.lastActiveDate) : null;
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+          
+          if (!lastActive || lastActive.toDateString() === yesterday.toDateString()) {
+            nextStreak += 1;
+          } else if (lastActive.toDateString() !== today) {
+            nextStreak = 1;
           }
         }
-
-        const updatedProfile = {
-          ...prev,
-          totalCo2Saved: Math.max(0, parseFloat((prev.totalCo2Saved + co2ToSave).toFixed(1))),
-          streak: nextStreak,
-          lastActiveDate: isCompletedAction ? today : prev.lastActiveDate,
-        };
-
-        const badgeCheck = checkBadgeUnlocks(updatedProfile, badges, calculatorData);
-        if (badgeCheck.updated) {
-          setBadges(badgeCheck.badges);
-        }
-
-        return updatedProfile;
-      });
-
-      if (xpToGain > 0) {
-        addXP(xpToGain);
       }
+
+      const updatedProfile = {
+        ...prev,
+        totalCo2Saved: Math.max(0, parseFloat((prev.totalCo2Saved + co2ToSave).toFixed(1))),
+        streak: nextStreak,
+        lastActiveDate: isCompletedAction ? today : prev.lastActiveDate,
+      };
+
+      const badgeCheck = checkBadgeUnlocks(updatedProfile, badges, calculatorData);
+      if (badgeCheck.updated) {
+        setBadges(badgeCheck.badges);
+      }
+
+      return updatedProfile;
+    });
+
+    if (xpToGain !== 0) {
+      addXP(xpToGain);
     }
   };
 
@@ -733,56 +722,53 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const completeChallenge = (id: string) => {
-    let co2ToSave = 0;
-    let xpToGain = 0;
-    let completedChallengeInfo: Challenge | null = null;
+    const targetChallenge = challenges.find((c) => c.id === id && c.status === "active");
+    if (!targetChallenge) return;
+
+    const co2ToSave = targetChallenge.co2Saved;
+    const xpToGain = targetChallenge.xpReward;
 
     setChallenges((prev) =>
-      prev.map((challenge) => {
-        if (challenge.id === id && challenge.status === "active") {
-          co2ToSave = challenge.co2Saved;
-          xpToGain = challenge.xpReward;
-          completedChallengeInfo = challenge;
-          return { ...challenge, status: "completed" as const };
-        }
-        return challenge;
-      })
+      prev.map((challenge) =>
+        challenge.id === id && challenge.status === "active"
+          ? { ...challenge, status: "completed" as const }
+          : challenge
+      )
     );
 
-    if (completedChallengeInfo) {
-      const today = new Date();
-      const monthYear = today.toLocaleDateString("en-US", { month: "long", year: "numeric" });
-      const historyEntry: ChallengeHistoryEntry = {
-        id: `${(completedChallengeInfo as Challenge).id}_completed_${Date.now()}`,
-        name: (completedChallengeInfo as Challenge).name,
-        category: (completedChallengeInfo as Challenge).category,
-        co2Saved: (completedChallengeInfo as Challenge).co2Saved,
-        xpReward: (completedChallengeInfo as Challenge).xpReward,
-        completedAt: monthYear,
-        completedTimestamp: Date.now(),
-        weekStart: challengesWeekStart || undefined,
-        weekEnd: challengesWeekEnd || undefined
-      };
-      
-      setChallengeHistory((prev) => {
-        const exists = prev.some((h) => h.name === historyEntry.name && h.completedAt === historyEntry.completedAt);
-        if (exists) return prev;
-        return [...prev, historyEntry];
-      });
+    const today = new Date();
+    const monthYear = today.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    const historyEntry: ChallengeHistoryEntry = {
+      id: `${targetChallenge.id}_completed_${Date.now()}`,
+      name: targetChallenge.name,
+      category: targetChallenge.category,
+      co2Saved: targetChallenge.co2Saved,
+      xpReward: targetChallenge.xpReward,
+      completedAt: monthYear,
+      completedTimestamp: Date.now(),
+      weekStart: challengesWeekStart || undefined,
+      weekEnd: challengesWeekEnd || undefined
+    };
+    
+    setChallengeHistory((prev) => {
+      const exists = prev.some((h) => h.name === historyEntry.name && h.completedAt === historyEntry.completedAt);
+      if (exists) return prev;
+      return [...prev, historyEntry];
+    });
 
-      setProfile((prev) => {
-        const updated = {
-          ...prev,
-          totalCo2Saved: parseFloat((prev.totalCo2Saved + co2ToSave).toFixed(1)),
-        };
-        const badgeCheck = checkBadgeUnlocks(updated, badges, calculatorData);
-        if (badgeCheck.updated) {
-          setBadges(badgeCheck.badges);
-        }
-        return updated;
-      });
-      addXP(xpToGain);
-    }
+    setProfile((prev) => {
+      const updated = {
+        ...prev,
+        totalCo2Saved: parseFloat((prev.totalCo2Saved + co2ToSave).toFixed(1)),
+      };
+      const badgeCheck = checkBadgeUnlocks(updated, badges, calculatorData);
+      if (badgeCheck.updated) {
+        setBadges(badgeCheck.badges);
+      }
+      return updated;
+    });
+    
+    addXP(xpToGain);
   };
 
   const updateProfile = (username: string, avatar: string) => {
