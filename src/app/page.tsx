@@ -269,7 +269,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-gray-900/60 bg-eco-dark/40 py-8 text-center text-xs text-gray-500">
-        <p>© 2026 EcoTrack AI. Powered by Advanced Ecological Systems. Local persists enabled.</p>
+        <p>© 2026 EcoTrack AI. Helping people build sustainable habits.</p>
       </footer>
     </div>
   );
