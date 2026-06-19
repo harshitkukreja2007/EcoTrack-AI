@@ -65,21 +65,43 @@ export default function Home() {
             </a>
           </div>
 
-          {/* Live Eco Statistics */}
+          {/* Feature Highlights Grid */}
           <div className="mt-20 grid w-full grid-cols-1 gap-6 sm:grid-cols-3 max-w-4xl">
-            <div className="glass-panel rounded-2xl p-6 text-center">
-              <span className="text-sm font-mono text-gray-500 uppercase tracking-widest block">CO2 Saved Globally</span>
-              <span className="mt-2 text-3xl font-extrabold text-white text-glow-green font-mono">1,429,812 kg</span>
+            <div className="glass-panel glass-panel-hover rounded-2xl p-6 text-left flex flex-col justify-between h-48 border-eco-green/10">
+              <div className="text-2xl mb-1">🌱</div>
+              <div>
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-1.5">Carbon Tracking</h3>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  Measure your carbon footprint across transport, energy, food, shopping, and lifestyle habits.
+                </p>
+              </div>
             </div>
-            <div className="glass-panel rounded-2xl p-6 text-center border-eco-cyan/20">
-              <span className="text-sm font-mono text-gray-500 uppercase tracking-widest block">Active Trackers</span>
-              <span className="mt-2 text-3xl font-extrabold text-white text-glow-cyan font-mono">24,910</span>
+            
+            <div className="glass-panel glass-panel-hover rounded-2xl p-6 text-left flex flex-col justify-between h-48 border-eco-cyan/15 bg-eco-cyan/5">
+              <div className="text-2xl mb-1">🤖</div>
+              <div>
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-1.5">AI-Powered Recommendations</h3>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  Receive personalized sustainability suggestions generated from your footprint profile.
+                </p>
+              </div>
             </div>
-            <div className="glass-panel rounded-2xl p-6 text-center">
-              <span className="text-sm font-mono text-gray-500 uppercase tracking-widest block">Level Rewards Unlocked</span>
-              <span className="mt-2 text-3xl font-extrabold text-white text-glow-green font-mono">118,504</span>
+
+            <div className="glass-panel glass-panel-hover rounded-2xl p-6 text-left flex flex-col justify-between h-48 border-eco-green/10">
+              <div className="text-2xl mb-1">🎯</div>
+              <div>
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-1.5">Goals, Rewards & Progress</h3>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  Build daily habits, complete weekly challenges, earn XP, unlock badges, and track long-term improvements.
+                </p>
+              </div>
             </div>
           </div>
+
+          {/* Core Mission Subtitle */}
+          <p className="mt-6 text-xs text-gray-500 font-medium font-sans">
+            Built to help people make more sustainable everyday choices.
+          </p>
         </section>
 
         {/* Quick Simulator Showcase Section */}
