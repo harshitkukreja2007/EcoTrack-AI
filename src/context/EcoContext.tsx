@@ -304,6 +304,8 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [lastHabitsResetDate, setLastHabitsResetDate] = useState<string | null>(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const isLoadedRef = useRef(false);
+  const currentUserUidRef = useRef<string | null>(null);
 
   // Ref to track last synced stringified data for each field
   const lastSyncedDataRef = useRef<Record<string, string>>({});
@@ -311,9 +313,20 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Monitor Authentication and Load Initial Data
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      const prevUid = currentUserUidRef.current;
+      const newUid = firebaseUser ? firebaseUser.uid : null;
+      currentUserUidRef.current = newUid;
+
       setUser(firebaseUser);
+
+      if (newUid === prevUid && isLoadedRef.current) {
+        setAuthLoading(false);
+        return;
+      }
+
       setAuthLoading(true);
       setIsLoaded(false);
+      isLoadedRef.current = false;
       lastSyncedDataRef.current = {}; // Clear sync cache on auth state change
 
       if (firebaseUser) {
@@ -475,6 +488,7 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
       setAuthLoading(false);
       setIsLoaded(true);
+      isLoadedRef.current = true;
     });
 
     return () => unsubscribe();
