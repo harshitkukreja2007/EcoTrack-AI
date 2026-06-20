@@ -10,8 +10,9 @@ export async function POST(req: Request) {
     try {
       calculatorData = validateCalculatorData(body.calculatorData);
       carbonBreakdown = validateCarbonBreakdown(body.carbonBreakdown);
-    } catch (err: any) {
-      return NextResponse.json({ error: err.message || "Invalid payload" }, { status: 400 });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Invalid payload";
+      return NextResponse.json({ error: message }, { status: 400 });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;

@@ -20,73 +20,78 @@ export interface CarbonBreakdown {
   total: number;
 }
 
-export const validateCalculatorData = (data: any): CalculatorData => {
+export const validateCalculatorData = (data: unknown): CalculatorData => {
   if (!data || typeof data !== "object") {
     throw new Error("Invalid input: data must be an object");
   }
 
-  const transportDistance = Number(data.transportDistance);
+  const obj = data as Record<string, unknown>;
+
+  const transportDistance = Number(obj.transportDistance);
   if (isNaN(transportDistance) || transportDistance < 0) {
     throw new Error("Invalid transportDistance: must be a non-negative number");
   }
 
   const validTransportTypes = ["gasoline", "diesel", "hybrid", "electric", "public", "bike_walk"];
-  if (!validTransportTypes.includes(data.transportType)) {
+  const transportType = String(obj.transportType);
+  if (!validTransportTypes.includes(transportType)) {
     throw new Error(`Invalid transportType: must be one of ${validTransportTypes.join(", ")}`);
   }
 
-  const electricityUsage = Number(data.electricityUsage);
+  const electricityUsage = Number(obj.electricityUsage);
   if (isNaN(electricityUsage) || electricityUsage < 0) {
     throw new Error("Invalid electricityUsage: must be a non-negative number");
   }
 
-  const renewableRatio = Number(data.renewableRatio);
+  const renewableRatio = Number(obj.renewableRatio);
   if (isNaN(renewableRatio) || renewableRatio < 0 || renewableRatio > 100) {
     throw new Error("Invalid renewableRatio: must be a number between 0 and 100");
   }
 
   const validDietTypes = ["vegan", "vegetarian", "pescatarian", "average_meat", "heavy_meat"];
-  if (!validDietTypes.includes(data.dietType)) {
+  const dietType = String(obj.dietType);
+  if (!validDietTypes.includes(dietType)) {
     throw new Error(`Invalid dietType: must be one of ${validDietTypes.join(", ")}`);
   }
 
-  const localFoodRatio = Number(data.localFoodRatio);
+  const localFoodRatio = Number(obj.localFoodRatio);
   if (isNaN(localFoodRatio) || localFoodRatio < 0 || localFoodRatio > 100) {
     throw new Error("Invalid localFoodRatio: must be a number between 0 and 100");
   }
 
-  const shoppingClothing = Number(data.shoppingClothing);
+  const shoppingClothing = Number(obj.shoppingClothing);
   if (isNaN(shoppingClothing) || shoppingClothing < 0) {
     throw new Error("Invalid shoppingClothing: must be a non-negative number");
   }
 
-  const shoppingTech = Number(data.shoppingTech);
+  const shoppingTech = Number(obj.shoppingTech);
   if (isNaN(shoppingTech) || shoppingTech < 0) {
     throw new Error("Invalid shoppingTech: must be a non-negative number");
   }
 
   return {
     transportDistance,
-    transportType: data.transportType as CalculatorData["transportType"],
+    transportType: transportType as CalculatorData["transportType"],
     electricityUsage,
     renewableRatio,
-    dietType: data.dietType as CalculatorData["dietType"],
+    dietType: dietType as CalculatorData["dietType"],
     localFoodRatio,
     shoppingClothing,
     shoppingTech,
-    wasteRecycling: Boolean(data.wasteRecycling),
-    wasteComposting: Boolean(data.wasteComposting),
+    wasteRecycling: Boolean(obj.wasteRecycling),
+    wasteComposting: Boolean(obj.wasteComposting),
   };
 };
 
-export const validateCarbonBreakdown = (data: any): CarbonBreakdown => {
+export const validateCarbonBreakdown = (data: unknown): CarbonBreakdown => {
   if (!data || typeof data !== "object") {
     throw new Error("Invalid input: carbonBreakdown must be an object");
   }
+  const obj = data as Record<string, unknown>;
   const fields: (keyof CarbonBreakdown)[] = ["transport", "electricity", "diet", "shopping", "waste", "total"];
   const validated: Partial<CarbonBreakdown> = {};
   for (const field of fields) {
-    const val = Number(data[field]);
+    const val = Number(obj[field]);
     if (isNaN(val) || val < 0) {
       throw new Error(`Invalid carbonBreakdown field '${field}': must be a non-negative number`);
     }
