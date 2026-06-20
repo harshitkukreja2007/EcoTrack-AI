@@ -109,7 +109,7 @@ interface EcoContextType {
   toggleHabit: (id: string) => void;
   acceptChallenge: (id: string) => void;
   completeChallenge: (id: string) => void;
-  updateProfile: (username: string, avatar: string) => void;
+  updateProfile: (avatar: string) => void;
   addXP: (amount: number) => void;
   saveCurrentToHistory: () => void;
   resetAllData: () => void;
@@ -341,8 +341,8 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             if (data.profile) {
               const loadedProfile = {
                 ...data.profile,
-                username: data.profile.username || data.profile.displayName || "Eco Warrior",
-                displayName: data.profile.displayName || data.profile.username || "Eco Warrior",
+                username: "Eco Warrior",
+                displayName: "Eco Warrior",
               };
               setProfile(loadedProfile);
               lastSyncedDataRef.current.profile = JSON.stringify(loadedProfile);
@@ -401,12 +401,8 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             // Document does not exist: Initialize Firestore with current state (preserving guest data)
             const initialProfile = {
               ...profile,
-              username: profile.username && profile.username !== "Eco Warrior"
-                ? profile.username
-                : (firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "Eco Warrior"),
-              displayName: profile.displayName && profile.displayName !== "Eco Warrior"
-                ? profile.displayName
-                : (firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "Eco Warrior"),
+              username: "Eco Warrior",
+              displayName: "Eco Warrior",
             };
             setProfile(initialProfile);
             lastSyncedDataRef.current.profile = JSON.stringify(initialProfile);
@@ -451,8 +447,8 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             const parsed = JSON.parse(storedProfile);
             const loadedProfile = {
               ...parsed,
-              username: parsed.username || parsed.displayName || "Eco Warrior",
-              displayName: parsed.displayName || parsed.username || "Eco Warrior",
+              username: "Eco Warrior",
+              displayName: "Eco Warrior",
             };
             setProfile(loadedProfile);
             lastSyncedDataRef.current.profile = JSON.stringify(loadedProfile);
@@ -900,16 +896,8 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     addXP(xpToGain);
   };
 
-  const updateProfile = async (username: string, avatar: string) => {
-    setProfile((prev) => ({ ...prev, username, displayName: username, avatar }));
-    if (auth.currentUser) {
-      try {
-        const { updateProfile: updateFirebaseProfile } = await import("firebase/auth");
-        await updateFirebaseProfile(auth.currentUser, { displayName: username });
-      } catch (err) {
-        console.error("Failed to update Firebase Auth profile:", err);
-      }
-    }
+  const updateProfile = async (avatar: string) => {
+    setProfile((prev) => ({ ...prev, avatar }));
   };
 
   const saveCurrentToHistory = () => {

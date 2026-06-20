@@ -272,7 +272,7 @@ export default function Dashboard() {
         <main className="flex-1 min-w-0 flex flex-col gap-6">
           {/* Welcome Greeting Banner */}
           <div className="animate-fadeIn">
-            <h2 className="text-2xl font-bold text-white">Welcome back, {profile.username}! 👋</h2>
+            <h2 className="text-2xl font-bold text-white">Welcome back, Eco Warrior! 👋</h2>
             <p className="text-xs text-gray-400 mt-1">Let's check in on your habits and continue your sustainability journey.</p>
           </div>
 

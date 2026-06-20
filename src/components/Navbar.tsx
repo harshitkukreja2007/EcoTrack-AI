@@ -136,7 +136,7 @@ export default function Navbar() {
                 xpPulse ? "scale-105" : ""
               }`}>
                 <div className="flex items-center gap-1.5 text-xs sm:text-sm">
-                  <span className="font-bold text-white mr-1.5 hidden md:inline">{profile.username}</span>
+                  <span className="font-bold text-white mr-1.5 hidden md:inline">Eco Warrior</span>
                   <ShieldCheck className="h-3.5 w-3.5 text-eco-cyan" />
                   <span className="font-semibold text-white">Lvl {profile.level}</span>
                   <span className={`text-gray-400 hidden sm:inline transition-all ${

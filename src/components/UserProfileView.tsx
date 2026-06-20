@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useEco } from "@/context/EcoContext";
 import { 
-  Edit2, 
-  Check, 
   Award,
   Leaf,
   Flame,
@@ -22,19 +20,6 @@ const AVATAR_OPTIONS = [
 
 export default function UserProfileView() {
   const { profile, updateProfile, badges, carbonBreakdown, user } = useEco();
-  const [usernameInput, setUsernameInput] = useState(profile.username);
-  const [isEditing, setIsEditing] = useState(false);
-  const [saveNotify, setSaveNotify] = useState(false);
-
-  useEffect(() => {
-    setUsernameInput(profile.username);
-  }, [profile.username]);
-
-  useEffect(() => {
-    console.log("PROFILE STATE UPDATE IN UI:");
-    console.log("profile.username", profile.username);
-    console.log("profile.displayName", profile.displayName);
-  }, [profile.username, profile.displayName]);
 
   // Determine Level Rank Title
   const getRankTitle = (lvl: number) => {
@@ -45,29 +30,8 @@ export default function UserProfileView() {
     return "Earth Guardian";
   };
 
-  const handleSaveProfile = () => {
-    const editName = usernameInput;
-    console.log("BEFORE SAVE:");
-    console.log("input value", editName);
-    console.log("profile.username", profile.username);
-    console.log("profile.displayName", profile.displayName);
-
-    updateProfile(editName, profile.avatar);
-    setIsEditing(false);
-    setSaveNotify(true);
-
-    setTimeout(() => {
-      console.log("AFTER SAVE:");
-      console.log("input value", editName);
-      console.log("profile.username", editName);
-      console.log("profile.displayName", editName);
-    }, 100);
-
-    setTimeout(() => setSaveNotify(false), 2500);
-  };
-
   const handleSelectAvatar = (avatarId: string) => {
-    updateProfile(profile.username, avatarId);
+    updateProfile(avatarId);
   };
 
   const currentAvatarOption = AVATAR_OPTIONS.find((a) => a.id === profile.avatar) || AVATAR_OPTIONS[0];
@@ -75,7 +39,7 @@ export default function UserProfileView() {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
       
-      {/* Profile Editing & Customization (2/3 width) */}
+      {/* Profile Customization (2/3 width) */}
       <div className="xl:col-span-2 flex flex-col gap-6">
         
         {/* Profile Card */}
@@ -95,33 +59,9 @@ export default function UserProfileView() {
             {/* Profile detail settings */}
             <div className="flex-1 w-full text-center sm:text-left space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-center sm:justify-start">
-                {isEditing ? (
-                  <div className="flex gap-2 w-full max-w-sm">
-                    <input
-                      type="text"
-                      value={usernameInput}
-                      onChange={(e) => setUsernameInput(e.target.value)}
-                      maxLength={18}
-                      className="bg-eco-dark/80 border border-eco-cyan/40 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-eco-cyan focus:ring-1 focus:ring-eco-cyan flex-1"
-                    />
-                    <button
-                      onClick={handleSaveProfile}
-                      className="p-2 bg-eco-cyan/20 border border-eco-cyan/40 hover:bg-eco-cyan/35 rounded-xl text-eco-cyan-light transition-all"
-                    >
-                      <Check className="h-5 w-5" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 justify-center sm:justify-start">
-                    <h3 className="text-2xl font-bold text-white tracking-tight">{profile.username}</h3>
-                    <button
-                      onClick={() => setIsEditing(true)}
-                      className="p-1 hover:bg-white/5 rounded-lg text-gray-500 hover:text-gray-300 transition-all"
-                    >
-                      <Edit2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                )}
+                <div className="flex items-center gap-2 justify-center sm:justify-start">
+                  <h3 className="text-2xl font-bold text-white tracking-tight">Eco Warrior</h3>
+                </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
@@ -155,12 +95,6 @@ export default function UserProfileView() {
               ))}
             </div>
           </div>
-          
-          {saveNotify && (
-            <div className="bg-eco-cyan/10 border border-eco-cyan/25 text-eco-cyan-light rounded-xl px-4 py-2.5 text-xs text-center font-semibold animate-pulse">
-              Profile settings updated successfully.
-            </div>
-          )}
         </div>
 
       </div>
