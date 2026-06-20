@@ -100,6 +100,24 @@ The score is calibrated against average per-capita emission benchmarks and is in
    - **LocalStorage Scenario Caching**: The simulator checks `localStorage` cache maps using parameter-specific hashes as keys before invoking server-side AI evaluations. If a scenario is analyzed once, subsequent views retrieve the response instantly from `localStorage`.
    - **Firestore Scope Isolation**: In accordance with privacy and storage segregation policies, AI scenario analysis cache entries are stored **only** inside the client browser's `localStorage` and are never written to Firestore. Cloud Firestore continues storing user profiles, daily habits logs, active challenges progress, unlocked badges, and monthly audit history entries only.
 
+## System Architecture
+
+User Input
+↓
+Carbon Calculation Engine
+↓
+CO₂ Footprint & Eco Score
+↓
+Gemini AI Analysis
+↓
+Personalized Recommendations
+↓
+Habits, Challenges & Progress Tracking
+↓
+Firestore Sync / LocalStorage Fallback
+
+EcoTrack AI follows a hybrid architecture. Carbon footprint calculations are performed locally using emission-factor-based estimation models, ensuring instant feedback and minimal latency. Gemini is then used as an intelligence layer that interprets the calculated footprint and generates personalized recommendations, sustainability action plans, and behavior-change guidance. User progress, habits, badges, streaks, and historical audits are synchronized through Firebase services while maintaining offline resilience through localStorage fallbacks.
+
 ### 5. Assumptions Made
 * **Baseline Carbon Factors**: Employs global averages (e.g., Grid intensity: 0.38 kg/kWh; Gasoline travel: 0.18 kg/km; Average meat diet: 2.5 Tons/yr).
 * **Rate Limits**: Assumes the configured Gemini API key is operating within its available quota limits. If quota is exceeded or the AI service is temporarily unavailable, the application displays a clear user-facing error message.
@@ -121,6 +139,14 @@ The score is calibrated against average per-capita emission benchmarks and is in
 
 * **Google Gemini API (`gemini-2.5-flash`)**: Used server-side to generate context-aware sustainability recommendations, weekly actionable carbon plans, emission culprit analysis, and confidence assessments.
 * **Antigravity**: Agentic coding AI assistant used for codebase upgrades, database architecture design, type troubleshooting, and accessibility enhancements.
+
+## Why AI Was Used
+
+Traditional carbon calculators typically stop after displaying an emissions estimate. EcoTrack AI extends beyond measurement by using generative AI to transform footprint data into actionable sustainability guidance.
+
+Gemini analyzes lifestyle-specific inputs and calculated emissions to identify the highest-impact emission sources, generate personalized reduction strategies, create weekly action plans, and provide contextual sustainability recommendations tailored to the user's habits.
+
+This approach allows EcoTrack AI to focus on long-term behavior change rather than simply reporting carbon metrics.
 
 ---
 
