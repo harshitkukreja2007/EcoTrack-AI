@@ -134,7 +134,7 @@ export default function CarbonCalculator() {
 
               {/* Transportation Type Cards */}
               <div className="space-y-3">
-                <span className="text-sm font-semibold text-gray-300">Vehicle Type & Fuel Engine</span>
+                <span className="text-sm font-semibold text-gray-300">Vehicle Type & Fuel Type</span>
                 <div 
                   role="radiogroup" 
                   aria-label="Vehicle Type & Fuel Engine" 
@@ -179,8 +179,8 @@ export default function CarbonCalculator() {
               className="space-y-8 animate-fadeIn"
             >
               <div>
-                <h3 className="text-xl font-bold text-white mb-2">Household Electricity Grid</h3>
-                <p className="text-sm text-gray-400">Specify your home electrical energy usage and renewable energy percentage.</p>
+                <h3 className="text-xl font-bold text-white mb-2">Home Electricity</h3>
+                <p className="text-sm text-gray-400">Select your monthly electricity usage and clean energy share.</p>
               </div>
 
               {/* Electricity Usage Slider */}
@@ -215,7 +215,7 @@ export default function CarbonCalculator() {
               {/* Renewable Ratio Slider */}
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-300 font-semibold">Renewable Energy Share (Solar/Wind)</span>
+                  <span className="text-gray-300 font-semibold">Clean Energy Share (Solar/Wind)</span>
                   <span className="text-eco-cyan-light font-mono font-bold">{calculatorData.renewableRatio}%</span>
                 </div>
                 <input
@@ -233,7 +233,7 @@ export default function CarbonCalculator() {
                   className="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-eco-cyan"
                 />
                 <div className="flex justify-between text-[10px] font-mono text-gray-500">
-                  <span>0% (Standard Grid)</span>
+                  <span>0% (Standard Power)</span>
                   <span>25%</span>
                   <span>50%</span>
                   <span>75%</span>
@@ -472,8 +472,8 @@ export default function CarbonCalculator() {
           
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-eco-green via-eco-cyan to-eco-green"></div>
 
-          <span className="text-xs font-mono text-gray-500 uppercase tracking-widest block mb-4">
-            Audit Projection
+          <span className="text-xs font-mono text-gray-500 tracking-wider block mb-4">
+            Your Impact
           </span>
 
           {/* Carbon Score Dial Graphic */}
@@ -506,7 +506,7 @@ export default function CarbonCalculator() {
               <span className="text-5xl font-extrabold text-white font-mono tracking-tighter">
                 {carbonBreakdown.total}
               </span>
-              <span className="text-[10px] text-gray-500 uppercase font-mono tracking-widest mt-0.5">
+              <span className="text-[10px] text-gray-500 font-mono tracking-wider mt-0.5">
                 Tons CO2e/Yr
               </span>
             </div>
@@ -519,7 +519,7 @@ export default function CarbonCalculator() {
           </div>
 
           <div className="w-full border-t border-gray-800/80 my-5 pt-4 text-left space-y-1">
-            <span className="text-xs text-gray-400 block">Planetary Benchmarks</span>
+            <span className="text-xs text-gray-400 block">Eco Benchmarks</span>
             <div className="flex justify-between items-center text-sm font-semibold">
               <span className="text-white">vs. National Average</span>
               {carbonBreakdown.total <= AVG_FOOTPRINT ? (
@@ -540,14 +540,14 @@ export default function CarbonCalculator() {
             }`}
           >
             <Calendar className="h-4 w-4" />
-            <span>{saveSuccess ? "Audit Log Saved!" : "Log Footprint Audit"}</span>
+            <span>{saveSuccess ? "Progress Saved!" : "Save My Progress"}</span>
           </button>
         </div>
 
         {/* Sector Breakdowns */}
         <div className="glass-panel rounded-3xl p-6 sm:p-8 flex flex-col gap-5">
-          <h4 className="text-sm font-mono text-gray-500 uppercase tracking-widest">
-            CO2 Sector Breakdown
+          <h4 className="text-sm font-mono text-gray-500 tracking-wider">
+            Impact Breakdown
           </h4>
 
           <div className="space-y-4">

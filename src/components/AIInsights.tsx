@@ -150,7 +150,7 @@ export default function AIInsights() {
         </div>
         <div className="glass-panel rounded-3xl p-8 flex flex-col items-center justify-center text-center border-red-500/25">
           <AlertTriangle className="h-8 w-8 text-red-500/80 mb-3" />
-          <span className="text-xs font-mono text-gray-500">Simulation blocked: API inactive</span>
+          <span className="text-xs font-medium text-gray-400">Unable to load global impact projection</span>
         </div>
       </div>
     );
@@ -172,7 +172,7 @@ export default function AIInsights() {
               <AlertTriangle className="h-6 w-6" />
             </div>
             <div className="space-y-1">
-              <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block">Primary Carbon Source Analysis</span>
+              <span className="text-xs font-medium text-gray-400 block">Primary Carbon Source Analysis</span>
               <h3 className="text-xl font-bold text-white">Major Emission Source</h3>
               <p className="text-sm text-gray-400 leading-relaxed mt-2">{data.culpritExplanation}</p>
             </div>
@@ -263,7 +263,7 @@ export default function AIInsights() {
                       {isCompleted && <CheckCircle className="h-3.5 w-3.5" />}
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs font-mono font-bold uppercase tracking-wider text-eco-cyan-light">
+                      <span className="text-xs font-semibold text-eco-cyan-light">
                         {plan.day}
                       </span>
                       <p className={`text-xs mt-1 leading-normal ${isCompleted ? "text-gray-300 line-through opacity-75" : "text-white"}`}>
@@ -288,8 +288,8 @@ export default function AIInsights() {
           
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-eco-cyan" />
-            <span className="text-xs font-mono text-gray-500 uppercase tracking-widest block">
-              Confidence Engine
+            <span className="text-xs font-semibold text-gray-400 block">
+              Recommendation Confidence
             </span>
           </div>
 
@@ -297,7 +297,7 @@ export default function AIInsights() {
             {/* Numeric Badge */}
             <div className="h-16 w-16 rounded-2xl bg-eco-cyan/15 border border-eco-cyan/35 flex flex-col items-center justify-center shrink-0">
               <span className="text-2xl font-extrabold text-white font-mono">{data.confidence}%</span>
-              <span className="text-[8px] text-gray-500 uppercase font-mono">Rating</span>
+              <span className="text-[10px] text-gray-400 font-medium">score</span>
             </div>
             <div className="space-y-0.5">
               <span className="text-xs font-bold text-white block">Gemini Confidence Score</span>
@@ -313,8 +313,8 @@ export default function AIInsights() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Globe className="h-5 w-5 text-eco-cyan" />
-              <h3 className="text-sm font-mono text-gray-500 uppercase tracking-widest">
-                Global Impact Simulation
+              <h3 className="text-sm font-semibold text-gray-400">
+                Global Impact
               </h3>
             </div>
 
@@ -327,7 +327,7 @@ export default function AIInsights() {
 
             {/* Planet Earths Gauge */}
             <div className="flex flex-col items-center text-center my-6 py-6 border-y border-gray-800/50">
-              <span className="text-xs font-mono text-gray-500 uppercase tracking-widest block mb-2">Planets Required</span>
+              <span className="text-xs font-medium text-gray-400 block mb-2">Planets Required</span>
               
               {/* Visual Earth illustration */}
               <div className="relative flex items-center justify-center mb-4">
@@ -342,7 +342,7 @@ export default function AIInsights() {
               <span className="text-4xl font-extrabold text-white font-mono tracking-tight">
                 {earthsNeeded} <span className="text-base text-gray-500 font-sans font-medium">Earths</span>
               </span>
-              <span className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider font-mono">
+              <span className="text-xs text-gray-400 font-medium mt-1">
                 vs. 1.0 Sustainable Capacity
               </span>
             </div>

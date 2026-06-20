@@ -22,7 +22,7 @@ import {
 type TabId = "calculator" | "whatif" | "insights" | "progress" | "challenges" | "profile";
 
 export default function Dashboard() {
-  const { user, authLoading, carbonBreakdown, calculatorData, challengeHistory } = useEco();
+  const { user, authLoading, carbonBreakdown, calculatorData, challengeHistory, profile } = useEco();
   const [activeTab, setActiveTab] = useState<TabId>("calculator");
   const [mounted, setMounted] = useState(false);
 
@@ -196,8 +196,8 @@ export default function Dashboard() {
         {/* Left Sidebar Navigation (Desktop) */}
         <aside className="hidden lg:flex flex-col w-64 shrink-0 gap-2">
           <div className="glass-panel rounded-2xl p-4 flex flex-col gap-1">
-            <span className="text-xs font-mono text-gray-500 uppercase tracking-widest px-3 mb-2 block">
-              Workspace Options
+            <span className="text-xs font-semibold text-gray-400 px-3 mb-2 block">
+              Dashboard Options
             </span>
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -227,8 +227,8 @@ export default function Dashboard() {
             <div className="glass-panel rounded-2xl p-4 border-eco-green/15 bg-eco-green/5 relative overflow-hidden flex flex-col gap-2 animate-fadeIn">
               <div className="absolute top-0 right-0 h-12 w-12 rounded-full bg-eco-green/5 blur-lg"></div>
               <div className="flex items-center justify-between">
-                <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">
-                  Last Completed
+                <span className="text-xs font-medium text-gray-400">
+                  Last Completed Goal
                 </span>
                 <span className="text-[9px] bg-eco-green/20 text-eco-green px-2 py-0.5 rounded-full font-semibold">
                   +{lastChallenge.xpReward} XP
@@ -254,7 +254,7 @@ export default function Dashboard() {
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`flex items-center gap-2 shrink-0 rounded-xl px-4 py-3 border text-xs font-semibold uppercase tracking-wider transition-all duration-200 ${
+                  className={`flex items-center gap-2 shrink-0 rounded-xl px-4 py-3 border text-xs font-semibold transition-all duration-200 ${
                     isActive 
                       ? "bg-eco-green/10 border-eco-green text-eco-green-light"
                       : "border-gray-800/80 bg-[#0d1321]/30 text-gray-400"
@@ -270,12 +270,18 @@ export default function Dashboard() {
 
         {/* Content Panel Area */}
         <main className="flex-1 min-w-0 flex flex-col gap-6">
+          {/* Welcome Greeting Banner */}
+          <div className="animate-fadeIn">
+            <h2 className="text-2xl font-bold text-white">Welcome back, {profile.username}! 👋</h2>
+            <p className="text-xs text-gray-400 mt-1">Let's check in on your habits and continue your sustainability journey.</p>
+          </div>
+
           {smartReminder && (
             <div className="glass-panel rounded-2xl p-4 border-eco-amber/20 bg-eco-amber/5 relative overflow-hidden flex items-start gap-3 animate-fadeIn">
               <div className="absolute top-0 left-0 w-1 h-full bg-eco-amber"></div>
               <span className="text-lg">💡</span>
               <div className="flex-1">
-                <span className="text-xs font-mono text-gray-500 uppercase tracking-widest block mb-0.5">Friendly Tip</span>
+                <span className="text-xs font-semibold text-eco-amber-light block mb-0.5">Friendly Tip</span>
                 <p className="text-xs text-gray-300 leading-relaxed">{smartReminder.text}</p>
               </div>
             </div>
@@ -287,7 +293,7 @@ export default function Dashboard() {
               <div className="flex items-center gap-3">
                 <div className="bg-eco-green/15 p-2 rounded-xl text-sm shrink-0">🏆</div>
                 <div className="min-w-0">
-                  <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest block">Last Completed Challenge</span>
+                  <span className="text-xs font-medium text-gray-400 block">Last Completed Goal</span>
                   <span className="text-xs font-semibold text-gray-100 block truncate" title={lastChallenge.name}>
                     {lastChallenge.name}
                   </span>

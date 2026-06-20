@@ -133,8 +133,8 @@ export default function ProgressDashboard() {
                 </span>
               )}
             </div>
-            <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
-              Unit: Tons CO2e/Yr
+            <span className="text-xs text-gray-400 font-medium">
+              Unit: Tons CO2e/yr
             </span>
           </div>
 
@@ -211,8 +211,8 @@ export default function ProgressDashboard() {
                 </div>
               </div>
             ) : (
-              <div className="h-44 w-full rounded-2xl border border-dashed border-gray-800 flex items-center justify-center text-sm text-gray-500">
-                Audit logs are empty. Save your first carbon footprint calculator inputs to build statistics.
+              <div className="h-44 w-full rounded-2xl border border-dashed border-gray-800 flex items-center justify-center text-sm text-gray-500 text-center px-6">
+                🌱 Complete your first footprint assessment in the 'My Carbon Habits' tab to start your sustainability journey!
               </div>
             )}
 
@@ -299,24 +299,24 @@ export default function ProgressDashboard() {
           {/* Historical Analytics Grid */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 bg-[#0d1321]/30 border border-gray-800/80 rounded-2xl p-4">
             <div className="flex flex-col justify-center">
-              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Completed</span>
+              <span className="text-xs text-gray-450 font-medium block">Completed</span>
               <span className="text-base font-bold text-white font-mono">{totalCompleted}</span>
             </div>
             <div className="flex flex-col justify-center">
-              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Total XP</span>
+              <span className="text-xs text-gray-450 font-medium block">Total XP</span>
               <span className="text-base font-bold text-eco-cyan-light font-mono">+{totalXpEarned}</span>
             </div>
             <div className="flex flex-col justify-center">
-              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">CO2 Saved</span>
+              <span className="text-xs text-gray-450 font-medium block">CO2 Saved</span>
               <span className="text-base font-bold text-eco-green-light font-mono">-{totalCo2Saved.toFixed(1)} kg</span>
             </div>
             <div className="flex flex-col justify-center">
-              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Streak</span>
+              <span className="text-xs text-gray-450 font-medium block">Streak</span>
               <span className="text-base font-bold text-white font-mono">{longestChallengeStreak}w</span>
               <span className="text-[8px] text-gray-500">Current: {weeklyChallengesStreak}w</span>
             </div>
             <div className="flex flex-col justify-center col-span-2 md:col-span-1">
-              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Fav Category</span>
+              <span className="text-xs text-gray-450 font-medium block">Top Category</span>
               <span className="text-[10px] font-bold text-white leading-tight capitalize truncate mt-1 bg-gray-800/50 px-2 py-0.5 rounded border border-gray-700/30 inline-block w-fit">{favoriteCategory}</span>
             </div>
           </div>
@@ -335,7 +335,7 @@ export default function ProgressDashboard() {
               <button
                 key={chip.id}
                 onClick={() => setSelectedCategory(chip.id)}
-                className={`px-3 py-1 text-[10px] sm:text-xs font-semibold rounded-lg border transition-all duration-200 uppercase tracking-wider ${
+                className={`px-3 py-1 text-[10px] sm:text-xs font-semibold rounded-lg border transition-all duration-200 ${
                   selectedCategory === chip.id
                     ? "bg-eco-green/10 border-eco-green text-eco-green-light"
                     : "border-gray-800 bg-[#0d1321]/30 text-gray-400 hover:border-gray-700"
@@ -359,11 +359,11 @@ export default function ProgressDashboard() {
                     </div>
                     <div className="flex flex-col">
                       <span className="text-sm font-bold text-white leading-tight">{item.name}</span>
-                      <span className="text-[10px] text-gray-500 font-mono mt-0.5 uppercase tracking-wide">
+                      <span className="text-xs text-gray-400 font-medium mt-0.5">
                         Category: {item.category} • Date: {item.completedAt}
                       </span>
                       {item.weekStart && item.weekEnd && (
-                        <span className="text-[8px] text-gray-600 font-mono mt-0.5">
+                        <span className="text-[10px] text-gray-500 font-medium mt-0.5">
                           Cycle: {new Date(item.weekStart).toLocaleDateString("en-US", { month: "short", day: "numeric" })} - {new Date(item.weekEnd).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                         </span>
                       )}
@@ -399,8 +399,8 @@ export default function ProgressDashboard() {
           {/* Flame ambient glow */}
           <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-orange-500/5 blur-2xl"></div>
 
-          <span className="text-xs font-mono text-gray-500 uppercase tracking-widest block mb-4">
-            Active streak tracker
+          <span className="text-xs text-gray-450 font-semibold block mb-4">
+            Active Streak Tracker
           </span>
 
           <div className="relative flex items-center justify-center h-28 w-28 bg-orange-500/5 border border-orange-500/10 rounded-full my-4 shadow-[0_0_20px_rgba(239,114,21,0.06)]">
@@ -425,22 +425,22 @@ export default function ProgressDashboard() {
 
         {/* Level Up Information Card */}
         <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-4">
-          <h4 className="text-sm font-mono text-gray-500 uppercase tracking-widest">
-            Level Progress spec
+          <h4 className="text-sm font-semibold text-gray-400">
+            Level Progress
           </h4>
 
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-xs text-gray-400">Current Rank</span>
               <span className="text-xs font-bold text-white font-mono bg-eco-cyan/15 text-eco-cyan-light rounded px-2.5 py-0.5 border border-eco-cyan/25">
-                Level {profile.level} Operator
+                Level {profile.level} Companion
               </span>
             </div>
             
             {/* XP progress bar */}
             <div className="space-y-1">
-              <div className="flex justify-between text-xs font-mono">
-                <span className="text-gray-500">XP Progress</span>
+              <div className="flex justify-between text-xs">
+                <span className="text-gray-400 font-medium">XP Progress</span>
                 <span className="text-white font-bold">{profile.xp} / {profile.level * 100} XP</span>
               </div>
               <div className="h-2 w-full bg-gray-800/80 rounded-full overflow-hidden border border-gray-800">

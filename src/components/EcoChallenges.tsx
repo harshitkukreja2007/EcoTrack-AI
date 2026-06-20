@@ -47,8 +47,8 @@ export default function EcoChallenges() {
               <Zap className="h-5 w-5 text-eco-green" />
               <h3 className="text-lg font-bold text-white">Daily Green Actions</h3>
             </div>
-            <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
-              Resets Daily
+            <span className="text-xs text-gray-450 font-semibold">
+              Resets daily
             </span>
           </div>
 
@@ -74,9 +74,9 @@ export default function EcoChallenges() {
 
                   <div className="flex flex-col">
                     <span className={`text-sm font-semibold transition-all ${habit.completed ? "text-white line-through opacity-85" : "text-gray-200"}`}>
-                      {habit.name}
+                       {habit.name}
                     </span>
-                    <span className="text-[10px] text-gray-500 font-mono mt-0.5 uppercase tracking-wide">
+                    <span className="text-xs text-gray-400 font-medium mt-0.5">
                       Category: {habit.category}
                     </span>
                   </div>
@@ -97,7 +97,7 @@ export default function EcoChallenges() {
           <div className="bg-gray-800/40 p-4 rounded-2xl flex items-start gap-2.5 text-xs text-gray-400 leading-normal">
             <Info className="h-4 w-4 text-eco-cyan shrink-0 mt-0.5" />
             <span>
-              Checking off daily habits records immediate carbon savings directly to your cumulative stats, maintains your active day streak, and grants XP to raise your operator rank.
+              Checking off daily habits records immediate carbon savings directly to your cumulative stats, maintains your active day streak, and grants XP to raise your sustainability level.
             </span>
           </div>
         </div>
@@ -123,19 +123,19 @@ export default function EcoChallenges() {
           
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div>
-              <span className="text-gray-500 block text-[9px] uppercase font-mono">Active/Total</span>
+              <span className="text-gray-400 block text-xs font-medium">Active Goals</span>
               <span className="text-xs font-bold text-white font-mono">{activeCount} / {totalCount}</span>
             </div>
             <div>
-              <span className="text-gray-500 block text-[9px] uppercase font-mono">Completed</span>
+              <span className="text-gray-400 block text-xs font-medium">Completed</span>
               <span className="text-xs font-bold text-eco-green font-mono">{completedCount}</span>
             </div>
             <div>
-              <span className="text-gray-500 block text-[9px] uppercase font-mono">Completion Rate</span>
+              <span className="text-gray-400 block text-xs font-medium">Completion Rate</span>
               <span className="text-xs font-bold text-eco-cyan font-mono">{completionRate}%</span>
             </div>
             <div>
-              <span className="text-gray-500 block text-[9px] uppercase font-mono">Time Left</span>
+              <span className="text-gray-400 block text-xs font-medium">Time Left</span>
               <span className="text-xs font-bold text-yellow-500 font-mono">{daysRemaining} Day{daysRemaining !== 1 && "s"}</span>
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function EcoChallenges() {
                     <span className="text-sm font-bold text-white leading-tight">
                       {challenge.name}
                     </span>
-                    <span className="text-[9px] font-mono bg-gray-800 text-gray-400 px-2 py-0.5 rounded border border-gray-700/60 uppercase shrink-0">
+                    <span className="text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded border border-gray-700/60 font-semibold shrink-0">
                       {challenge.duration}
                     </span>
                   </div>
@@ -190,10 +190,10 @@ export default function EcoChallenges() {
                   </p>
 
                   <div className="flex gap-2.5 pt-1 items-center">
-                    <span className={`text-[8px] font-mono font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${diffColorClass}`}>
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${diffColorClass}`}>
                       {difficultyLabel}
                     </span>
-                    <span className="text-[9px] font-mono text-gray-500 uppercase tracking-wider">
+                    <span className="text-xs font-medium text-gray-400">
                       {challenge.category}
                     </span>
                   </div>

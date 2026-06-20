@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
@@ -305,12 +305,16 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // Ref to track last synced stringified data for each field
+  const lastSyncedDataRef = useRef<Record<string, string>>({});
+
   // Monitor Authentication and Load Initial Data
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       setAuthLoading(true);
       setIsLoaded(false);
+      lastSyncedDataRef.current = {}; // Clear sync cache on auth state change
 
       if (firebaseUser) {
         // Authenticated: Load from Firestore
@@ -319,21 +323,60 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           const docSnap = await getDoc(userDocRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
-            if (data.profile) setProfile(data.profile);
-            if (data.calculatorData) setCalculatorData(data.calculatorData);
-            if (data.habits) setHabits(data.habits);
-            if (data.challenges) setChallenges(data.challenges);
-            if (data.badges) setBadges(data.badges);
-            if (data.history) setHistory(data.history);
+            if (data.profile) {
+              setProfile(data.profile);
+              lastSyncedDataRef.current.profile = JSON.stringify(data.profile);
+            }
+            if (data.calculatorData) {
+              setCalculatorData(data.calculatorData);
+              lastSyncedDataRef.current.calculatorData = JSON.stringify(data.calculatorData);
+            }
+            if (data.habits) {
+              setHabits(data.habits);
+              lastSyncedDataRef.current.habits = JSON.stringify(data.habits);
+            }
+            if (data.challenges) {
+              setChallenges(data.challenges);
+              lastSyncedDataRef.current.challenges = JSON.stringify(data.challenges);
+            }
+            if (data.badges) {
+              setBadges(data.badges);
+              lastSyncedDataRef.current.badges = JSON.stringify(data.badges);
+            }
+            if (data.history) {
+              setHistory(data.history);
+              lastSyncedDataRef.current.history = JSON.stringify(data.history);
+            }
             
             // Sync new states
-            if (data.challengeHistory) setChallengeHistory(data.challengeHistory);
-            if (data.challengesWeekStart) setChallengesWeekStart(data.challengesWeekStart);
-            if (data.challengesWeekEnd) setChallengesWeekEnd(data.challengesWeekEnd);
-            if (data.weeklyChallengesStreak !== undefined) setWeeklyChallengesStreak(data.weeklyChallengesStreak);
-            if (data.longestChallengeStreak !== undefined) setLongestChallengeStreak(data.longestChallengeStreak);
-            if (data.totalWeeksFullyCompleted !== undefined) setTotalWeeksFullyCompleted(data.totalWeeksFullyCompleted);
-            if (data.lastHabitsResetDate) setLastHabitsResetDate(data.lastHabitsResetDate);
+            if (data.challengeHistory) {
+              setChallengeHistory(data.challengeHistory);
+              lastSyncedDataRef.current.challengeHistory = JSON.stringify(data.challengeHistory);
+            }
+            if (data.challengesWeekStart) {
+              setChallengesWeekStart(data.challengesWeekStart);
+              lastSyncedDataRef.current.challengesWeekStart = JSON.stringify(data.challengesWeekStart);
+            }
+            if (data.challengesWeekEnd) {
+              setChallengesWeekEnd(data.challengesWeekEnd);
+              lastSyncedDataRef.current.challengesWeekEnd = JSON.stringify(data.challengesWeekEnd);
+            }
+            if (data.weeklyChallengesStreak !== undefined) {
+              setWeeklyChallengesStreak(data.weeklyChallengesStreak);
+              lastSyncedDataRef.current.weeklyChallengesStreak = JSON.stringify(data.weeklyChallengesStreak);
+            }
+            if (data.longestChallengeStreak !== undefined) {
+              setLongestChallengeStreak(data.longestChallengeStreak);
+              lastSyncedDataRef.current.longestChallengeStreak = JSON.stringify(data.longestChallengeStreak);
+            }
+            if (data.totalWeeksFullyCompleted !== undefined) {
+              setTotalWeeksFullyCompleted(data.totalWeeksFullyCompleted);
+              lastSyncedDataRef.current.totalWeeksFullyCompleted = JSON.stringify(data.totalWeeksFullyCompleted);
+            }
+            if (data.lastHabitsResetDate) {
+              setLastHabitsResetDate(data.lastHabitsResetDate);
+              lastSyncedDataRef.current.lastHabitsResetDate = JSON.stringify(data.lastHabitsResetDate);
+            }
           } else {
             // Document does not exist: Initialize Firestore with defaults
             await setDoc(userDocRef, {
@@ -373,20 +416,59 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           const storedTotalWeeks = localStorage.getItem("ecotrack_totalWeeksFullyCompleted");
           const storedResetDate = localStorage.getItem("ecotrack_lastHabitsResetDate");
 
-          if (storedProfile) setProfile(JSON.parse(storedProfile));
-          if (storedCalculator) setCalculatorData(JSON.parse(storedCalculator));
-          if (storedHabits) setHabits(JSON.parse(storedHabits));
-          if (storedChallenges) setChallenges(JSON.parse(storedChallenges));
-          if (storedBadges) setBadges(JSON.parse(storedBadges));
-          if (storedHistory) setHistory(JSON.parse(storedHistory));
+          if (storedProfile) {
+            setProfile(JSON.parse(storedProfile));
+            lastSyncedDataRef.current.profile = storedProfile;
+          }
+          if (storedCalculator) {
+            setCalculatorData(JSON.parse(storedCalculator));
+            lastSyncedDataRef.current.calculatorData = storedCalculator;
+          }
+          if (storedHabits) {
+            setHabits(JSON.parse(storedHabits));
+            lastSyncedDataRef.current.habits = storedHabits;
+          }
+          if (storedChallenges) {
+            setChallenges(JSON.parse(storedChallenges));
+            lastSyncedDataRef.current.challenges = storedChallenges;
+          }
+          if (storedBadges) {
+            setBadges(JSON.parse(storedBadges));
+            lastSyncedDataRef.current.badges = storedBadges;
+          }
+          if (storedHistory) {
+            setHistory(JSON.parse(storedHistory));
+            lastSyncedDataRef.current.history = storedHistory;
+          }
 
-          if (storedHistoryList) setChallengeHistory(JSON.parse(storedHistoryList));
-          if (storedWeekStart) setChallengesWeekStart(storedWeekStart);
-          if (storedWeekEnd) setChallengesWeekEnd(storedWeekEnd);
-          if (storedWeeklyStreak) setWeeklyChallengesStreak(Number(storedWeeklyStreak));
-          if (storedLongestStreak) setLongestChallengeStreak(Number(storedLongestStreak));
-          if (storedTotalWeeks) setTotalWeeksFullyCompleted(Number(storedTotalWeeks));
-          if (storedResetDate) setLastHabitsResetDate(storedResetDate);
+          if (storedHistoryList) {
+            setChallengeHistory(JSON.parse(storedHistoryList));
+            lastSyncedDataRef.current.challengeHistory = storedHistoryList;
+          }
+          if (storedWeekStart) {
+            setChallengesWeekStart(storedWeekStart);
+            lastSyncedDataRef.current.challengesWeekStart = JSON.stringify(storedWeekStart);
+          }
+          if (storedWeekEnd) {
+            setChallengesWeekEnd(storedWeekEnd);
+            lastSyncedDataRef.current.challengesWeekEnd = JSON.stringify(storedWeekEnd);
+          }
+          if (storedWeeklyStreak) {
+            setWeeklyChallengesStreak(Number(storedWeeklyStreak));
+            lastSyncedDataRef.current.weeklyChallengesStreak = JSON.stringify(Number(storedWeeklyStreak));
+          }
+          if (storedLongestStreak) {
+            setLongestChallengeStreak(Number(storedLongestStreak));
+            lastSyncedDataRef.current.longestChallengeStreak = JSON.stringify(Number(storedLongestStreak));
+          }
+          if (storedTotalWeeks) {
+            setTotalWeeksFullyCompleted(Number(storedTotalWeeks));
+            lastSyncedDataRef.current.totalWeeksFullyCompleted = JSON.stringify(Number(storedTotalWeeks));
+          }
+          if (storedResetDate) {
+            setLastHabitsResetDate(storedResetDate);
+            lastSyncedDataRef.current.lastHabitsResetDate = JSON.stringify(storedResetDate);
+          }
         } catch (e) {
           console.error("Failed to load local storage data fallback:", e);
         }
@@ -401,6 +483,14 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Sync to database or localStorage on state changes
   const saveField = useCallback(async (fieldName: string, data: unknown) => {
     if (!isLoaded) return;
+    
+    // Compare stringified representations to avoid redundant/stale writes
+    const dataStr = JSON.stringify(data);
+    if (lastSyncedDataRef.current[fieldName] === dataStr) {
+      return;
+    }
+    lastSyncedDataRef.current[fieldName] = dataStr;
+
     if (auth.currentUser) {
       setTimeout(() => setDbSyncing(true), 0);
       try {

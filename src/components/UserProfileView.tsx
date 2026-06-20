@@ -105,11 +105,11 @@ export default function UserProfileView() {
               </div>
 
               <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
-                <span className="text-xs font-semibold text-eco-cyan bg-eco-cyan/15 rounded-full px-3 py-1 border border-eco-cyan/25">
+                <span className="text-xs text-eco-cyan bg-eco-cyan/15 rounded-full px-3 py-1 border border-eco-cyan/25">
                   Rank: {getRankTitle(profile.level)}
                 </span>
-                <span className="text-xs text-gray-400 font-mono">
-                  {user ? `Operator: ${user.email}` : "Registered Local ID Sandbox"}
+                <span className="text-xs text-gray-400">
+                  {user ? `Member: ${user.email}` : "Saved locally on this device"}
                 </span>
               </div>
             </div>
@@ -138,7 +138,7 @@ export default function UserProfileView() {
           
           {saveNotify && (
             <div className="bg-eco-cyan/10 border border-eco-cyan/25 text-eco-cyan-light rounded-xl px-4 py-2.5 text-xs text-center font-semibold animate-pulse">
-              Profile parameters synchronized successfully.
+              Profile settings updated successfully.
             </div>
           )}
         </div>
@@ -152,8 +152,8 @@ export default function UserProfileView() {
         <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-6 border-eco-cyan/25 relative overflow-hidden">
           <div className="absolute top-0 right-0 h-20 w-20 rounded-full bg-eco-cyan/5 blur-xl"></div>
           
-          <h4 className="text-sm font-mono text-gray-500 uppercase tracking-widest">
-            Operator Stats Summary
+          <h4 className="text-sm font-semibold text-gray-400">
+            My Stats Summary
           </h4>
 
           <div className="space-y-4">
@@ -163,8 +163,8 @@ export default function UserProfileView() {
                 <Leaf className="h-5 w-5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] text-gray-500 uppercase tracking-wider font-mono">CO2 Saved</span>
-                <span className="text-lg font-bold text-white font-mono">{profile.totalCo2Saved.toLocaleString()} kg</span>
+                <span className="text-xs text-gray-400 font-medium">CO2 Saved</span>
+                <span className="text-lg font-bold text-white">{profile.totalCo2Saved.toLocaleString()} kg</span>
               </div>
             </div>
 
@@ -174,8 +174,8 @@ export default function UserProfileView() {
                 <Flame className="h-5 w-5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] text-gray-500 uppercase tracking-wider font-mono">Habits Streak</span>
-                <span className="text-lg font-bold text-white font-mono">{profile.streak} Days</span>
+                <span className="text-xs text-gray-400 font-medium">Habits Streak</span>
+                <span className="text-lg font-bold text-white">{profile.streak} Days</span>
               </div>
             </div>
 
@@ -185,8 +185,8 @@ export default function UserProfileView() {
                 <Globe className="h-5 w-5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] text-gray-500 uppercase tracking-wider font-mono">Footprint Audit</span>
-                <span className="text-lg font-bold text-white font-mono">{carbonBreakdown.total} t/yr</span>
+                <span className="text-xs text-gray-400 font-medium">Current Footprint</span>
+                <span className="text-lg font-bold text-white">{carbonBreakdown.total} t/yr</span>
               </div>
             </div>
           </div>
@@ -196,8 +196,8 @@ export default function UserProfileView() {
         <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-4">
           <div className="flex items-center gap-2">
             <Award className="h-5 w-5 text-eco-cyan" />
-            <h4 className="text-sm font-mono text-gray-500 uppercase tracking-widest">
-              Showcase Cabinet
+            <h4 className="text-sm font-semibold text-gray-400">
+              My Badges
             </h4>
           </div>
 
@@ -215,7 +215,7 @@ export default function UserProfileView() {
                   </div>
                 ))
             ) : (
-              <span className="text-xs text-gray-500 font-medium">Cabinet empty. Audit carbon or log habits to unlock badges.</span>
+              <span className="text-xs text-gray-500 font-medium">Unlock badges by adopting green habits or completing challenges.</span>
             )}
           </div>
         </div>

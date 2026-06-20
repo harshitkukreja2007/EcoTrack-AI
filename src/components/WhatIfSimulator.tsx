@@ -149,14 +149,14 @@ export default function WhatIfSimulator() {
         <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-6">
           <div className="flex items-center gap-2">
             <Sliders className="h-5 w-5 text-eco-green" />
-            <h3 className="text-lg font-bold text-white">Adjust Simulated Parameters</h3>
+            <h3 className="text-lg font-bold text-white">Test Habit Changes</h3>
           </div>
           
           <div className="space-y-6">
             
             {/* 1. Transport Sector */}
             <div className="border-b border-gray-800/80 pb-5 space-y-4">
-              <span className="text-xs font-mono font-bold text-eco-green uppercase tracking-wider block">Transportation</span>
+              <span className="text-xs font-semibold text-eco-green block">Transportation</span>
               <div className="space-y-3">
                 <div className="flex justify-between text-xs">
                   <span className="text-gray-400">Weekly Commute Distance</span>
@@ -203,7 +203,7 @@ export default function WhatIfSimulator() {
 
             {/* 2. Diet Sector */}
             <div className="border-b border-gray-800/80 pb-5 space-y-4">
-              <span className="text-xs font-mono font-bold text-eco-green uppercase tracking-wider block">Dietary & Food</span>
+              <span className="text-xs font-semibold text-eco-green block">Diet & Food</span>
               <div className="space-y-2">
                 <span className="text-xs text-gray-400 block">Meal Plan Choice</span>
                 <div className="grid grid-cols-5 gap-2">
@@ -249,7 +249,7 @@ export default function WhatIfSimulator() {
 
             {/* 3. Energy Grid Sector */}
             <div className="border-b border-gray-800/80 pb-5 space-y-4">
-              <span className="text-xs font-mono font-bold text-eco-green uppercase tracking-wider block">Home Energy</span>
+              <span className="text-xs font-semibold text-eco-green block">Home Energy</span>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div className="flex justify-between text-xs">
@@ -288,7 +288,7 @@ export default function WhatIfSimulator() {
 
             {/* 4. Consumption & Waste Sectors */}
             <div className="space-y-4">
-              <span className="text-xs font-mono font-bold text-eco-green uppercase tracking-wider block">Shopping & Recycling</span>
+              <span className="text-xs font-semibold text-eco-green block">Shopping & Recycling</span>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div className="flex justify-between text-xs">
@@ -363,17 +363,17 @@ export default function WhatIfSimulator() {
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-eco-green via-eco-cyan to-eco-green"></div>
           
           <div>
-            <span className="text-xs font-mono text-gray-500 uppercase tracking-widest block mb-4">
-              Real-Time Projection
+            <span className="text-xs font-semibold text-gray-400 block mb-4">
+              Current Estimate
             </span>
 
             {/* Simulated vs Current Metric tons */}
             <div className="flex flex-col items-center text-center my-6 pb-6 border-b border-gray-800/50">
-              <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-1">Simulated Footprint</span>
+              <span className="text-xs font-medium text-gray-400 block mb-1">Simulated Footprint</span>
               
               <div className="h-28 w-28 rounded-full border border-eco-green/25 bg-eco-green/5 flex flex-col items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.06)] mb-3">
                 <span className="text-3xl font-extrabold text-white font-mono tracking-tight">{simBreakdown.total}</span>
-                <span className="text-[8px] text-gray-500 uppercase font-mono">Tons CO2/yr</span>
+                <span className="text-[10px] text-gray-400 font-medium">tons CO2/yr</span>
               </div>
 
               <div className="text-xs text-gray-400">
@@ -388,7 +388,7 @@ export default function WhatIfSimulator() {
               <div className={`rounded-xl p-3 border flex flex-col items-center justify-center text-center ${
                 isSaving ? "bg-eco-green/5 border-eco-green/15" : co2Diff > 0 ? "bg-red-500/5 border-red-500/15" : "bg-gray-800/20 border-gray-700/20"
               }`}>
-                <span className="text-[9px] font-mono text-gray-500 uppercase tracking-wider block mb-1">Net CO2 Change</span>
+                <span className="text-xs font-medium text-gray-400 block mb-1">Net CO2 Change</span>
                 <div className="flex items-center gap-1">
                   {isSaving ? <TrendingDown className="h-3.5 w-3.5 text-eco-green" /> : co2Diff > 0 ? <TrendingUp className="h-3.5 w-3.5 text-red-400" /> : null}
                   <span className={`text-base font-extrabold font-mono ${diffColorClass}`}>
@@ -405,7 +405,7 @@ export default function WhatIfSimulator() {
                     ? "bg-red-500/5 border-red-500/15" 
                     : "bg-gray-800/20 border-gray-700/20"
               }`}>
-                <span className="text-[9px] font-mono text-gray-500 uppercase tracking-wider block mb-1">Score Shift</span>
+                <span className="text-xs font-medium text-gray-400 block mb-1">Score Shift</span>
                 <span className={`text-base font-extrabold font-mono ${
                   ecoScoreDiff > 0 ? "text-eco-green" : ecoScoreDiff < 0 ? "text-red-400" : "text-gray-400"
                 }`}>
@@ -433,10 +433,10 @@ export default function WhatIfSimulator() {
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <BrainCircuit className="h-5 w-5 text-eco-green" />
-              <span className="text-xs font-mono text-gray-400 uppercase tracking-widest block font-bold">AI Scenario Analysis</span>
+              <span className="text-xs font-semibold text-gray-400 block">AI Scenario Analysis</span>
             </div>
             {isCached && !loading && (
-              <div className="flex items-center gap-1 text-[8px] font-mono text-gray-500 uppercase bg-gray-900 px-1.5 py-0.5 rounded border border-gray-800">
+              <div className="flex items-center gap-1 text-[10px] text-gray-400 bg-gray-900 px-1.5 py-0.5 rounded border border-gray-800 font-semibold">
                 <Clock className="h-2.5 w-2.5" />
                 <span>Cached</span>
               </div>
@@ -460,17 +460,17 @@ export default function WhatIfSimulator() {
           ) : aiAnalysis ? (
             <div className="space-y-4 text-left animate-fadeIn">
               <div className="space-y-1 bg-eco-green/5 border border-eco-green/15 rounded-xl p-3.5">
-                <span className="text-[9px] font-mono text-eco-green uppercase tracking-wider block font-bold">Highest Impact Change</span>
+                <span className="text-xs font-semibold text-eco-green block">Highest Impact Change</span>
                 <span className="text-xs font-bold text-white">{aiAnalysis.mostImpactfulChange}</span>
               </div>
               
               <div className="space-y-1">
-                <span className="text-[9px] font-mono text-gray-500 uppercase tracking-wider block">Sustainability Rationale</span>
+                <span className="text-xs font-medium text-gray-450 block">Sustainability Rationale</span>
                 <p className="text-xs text-gray-300 leading-relaxed">{aiAnalysis.sustainabilityReasoning}</p>
               </div>
 
               <div className="space-y-2">
-                <span className="text-[9px] font-mono text-gray-500 uppercase tracking-wider block">Suggested Steps</span>
+                <span className="text-xs font-medium text-gray-450 block">Suggested Steps</span>
                 <ul className="space-y-1.5">
                   {aiAnalysis.implementationSteps.map((step, idx) => (
                     <li key={idx} className="text-xs text-gray-400 flex items-start gap-1.5 leading-normal">
@@ -482,7 +482,7 @@ export default function WhatIfSimulator() {
               </div>
 
               <div className="space-y-1 border-t border-gray-800/80 pt-3">
-                <span className="text-[9px] font-mono text-gray-500 uppercase tracking-wider block">5-Year Outlook</span>
+                <span className="text-xs font-medium text-gray-450 block">5-Year Outlook</span>
                 <p className="text-xs text-gray-400 leading-relaxed font-sans">{aiAnalysis.longTermBenefits}</p>
               </div>
             </div>

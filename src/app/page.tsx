@@ -32,20 +32,20 @@ export default function Home() {
         {/* Hero Section */}
         <section className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center flex flex-col items-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-gray-800 bg-gray-900/50 px-4 py-1.5 text-xs font-semibold text-eco-green-light tracking-wide uppercase mb-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-gray-800 bg-gray-900/50 px-4 py-1.5 text-xs font-semibold text-eco-green-light tracking-wide mb-6">
             <ShieldCheck className="h-3.5 w-3.5 text-eco-green" />
-            <span>Personalized Carbon Tracker & Goal Engine</span>
+            <span>Track your impact and build sustainable habits</span>
           </div>
 
           {/* Heading */}
           <h1 className="max-w-4xl text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl font-sans text-white leading-tight">
-            Decode Your Carbon Footprint.<br />
-            Take Action for a <span className="bg-gradient-to-r from-eco-green via-emerald-400 to-eco-cyan bg-clip-text text-transparent">Greener Planet</span>.
+            Small daily choices<br />
+            create <span className="bg-gradient-to-r from-eco-green via-emerald-400 to-eco-cyan bg-clip-text text-transparent">lasting impact</span>.
           </h1>
 
           {/* Subheading */}
           <p className="mt-6 max-w-2xl text-base sm:text-lg text-gray-400">
-            EcoTrack AI merges high-precision ecological modeling with gamified streak engines and behavior analytics to transform how you reduce emissions.
+            Track your habits, understand your footprint, and discover simple ways to live more sustainably.
           </p>
 
           {/* Hero CTAs */}
@@ -54,14 +54,14 @@ export default function Home() {
               href="/dashboard"
               className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-eco-green to-eco-cyan px-8 py-4 text-base font-semibold text-white shadow-[0_0_20px_rgba(16,185,129,0.15)] hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:scale-102 transition-all duration-300"
             >
-              <span>Start Tracking</span>
+              <span>Start Your Journey</span>
               <ArrowRight className="h-5 w-5" />
             </Link>
             <a
               href="#mission"
               className="rounded-xl border border-gray-800 bg-[#0d1321]/40 px-8 py-4 text-base font-semibold text-gray-300 hover:bg-[#0d1321]/80 hover:border-gray-700 transition-all duration-300"
             >
-              How It Works
+              See How It Works
             </a>
           </div>
 
@@ -70,9 +70,9 @@ export default function Home() {
             <div className="glass-panel glass-panel-hover rounded-2xl p-6 text-left flex flex-col justify-between h-48 border-eco-green/10">
               <div className="text-2xl mb-1">🌱</div>
               <div>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-1.5">Carbon Tracking</h3>
+                <h3 className="text-sm font-bold text-white tracking-wider mb-1.5">Track Your Habits</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Measure your carbon footprint across transport, energy, food, shopping, and lifestyle habits.
+                  Monitor transport, food, energy, and lifestyle choices.
                 </p>
               </div>
             </div>
@@ -80,9 +80,9 @@ export default function Home() {
             <div className="glass-panel glass-panel-hover rounded-2xl p-6 text-left flex flex-col justify-between h-48 border-eco-cyan/15 bg-eco-cyan/5">
               <div className="text-2xl mb-1">🤖</div>
               <div>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-1.5">AI-Powered Recommendations</h3>
+                <h3 className="text-sm font-bold text-white tracking-wider mb-1.5">Discover Improvements</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Receive personalized sustainability suggestions generated from your footprint profile.
+                  Get personalized recommendations based on your habits.
                 </p>
               </div>
             </div>
@@ -90,9 +90,9 @@ export default function Home() {
             <div className="glass-panel glass-panel-hover rounded-2xl p-6 text-left flex flex-col justify-between h-48 border-eco-green/10">
               <div className="text-2xl mb-1">🎯</div>
               <div>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-1.5">Goals, Rewards & Progress</h3>
+                <h3 className="text-sm font-bold text-white tracking-wider mb-1.5">See Your Progress</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Build daily habits, complete weekly challenges, earn XP, unlock badges, and track long-term improvements.
+                  Track streaks, goals, achievements, and long-term improvements.
                 </p>
               </div>
             </div>
