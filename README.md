@@ -36,18 +36,67 @@ EcoTrack AI is a gamified carbon footprint calculator, habits logger, and person
 * **Secure API Gateway**: Rather than calling Gemini from the frontend (which exposes keys), the client contacts a secure server-side API Route (`/api/insights`) that keeps the `GEMINI_API_KEY` hidden.
 * **Strict Schema Enforcement**: The API route forces Gemini to return a validated JSON schema. The client validates the output structure (fields, arrays, and types) to prevent crashes on malformed AI outputs.
 
+## Carbon Estimation Methodology
+
+EcoTrack AI uses formula-based carbon footprint estimation rather than placeholder or randomly generated values.
+
+The platform estimates annual CO₂-equivalent emissions across five major lifestyle categories:
+
+* Transportation
+* Home Energy
+* Dietary Habits
+* Shopping & Consumption
+* Waste & Lifestyle
+
+Methodology:
+
+Transportation:
+Uses distance-based emission factors (kg CO₂e/km) for gasoline, diesel, hybrid, electric, public transit, and active transport.
+
+Home Energy:
+Uses monthly electricity consumption, regional grid intensity assumptions, and renewable energy offsets.
+
+Diet:
+Uses annual dietary emission baselines for heavy meat, average meat, pescatarian, vegetarian, and vegan lifestyles.
+
+Shopping:
+Uses lifecycle-based emission estimates for clothing purchases and consumer technology upgrades.
+
+Waste:
+Uses waste generation baselines with recycling and composting reductions.
+
+The calculations are designed to provide realistic consumer-level sustainability estimates and behavior-change guidance rather than certified carbon audits.
+
+### Data Sources & References
+
+The emission factors and assumptions are based on publicly available environmental datasets and research, including:
+
+* US EPA (Environmental Protection Agency)
+* EPA eGRID
+* DEFRA (UK Department for Environment, Food & Rural Affairs)
+* IPCC climate reports
+* Oxford University dietary emissions studies
+* Carbon Trust lifecycle assessments
+* WRAP apparel lifecycle studies
+
+## Eco Score Methodology
+
+EcoTrack AI converts total annual CO₂e estimates into an Eco Score ranging from 10–100.
+
+The score is calibrated against average per-capita emission benchmarks and is intended to provide users with an easy-to-understand sustainability indicator rather than a scientific certification metric.
+
 ### 4. How the Solution Works
 1. **Gateway Check**: Users landing on the dashboard must authenticate via **Google SSO** or **Email/Password** credentials (managed via Firebase Auth).
 2. **Parameter Calculation**: The user sets sliders representing their weekly travel, diet type, home energy consumption, waste practices, and shopping habits. 
-   - A real-time calculator computes metric tons of $CO_2e$/year and outputs an overall **Eco Score** (10–100).
+   - A real-time, **formula-based local carbon calculator** performs **emission-factor-driven footprint estimation**, computing metric tons of $CO_2e$/year and outputting an overall **Eco Score** (10–100).
 3. **AI Recommendations**: When clicking the "AI Eco Insights" tab, the client sends the user's specific lifestyle parameters to `/api/insights`.
-   - **Gemini** analyzes the inputs, explains the highest emission culprit, generates target-specific goals with calculated offsets, constructs a 7-day action checklist, and rates its own reasoning confidence.
+   - **Gemini** analyzes the inputs, explains the highest emission culprit, generates target-specific goals with calculated offsets, constructs a 7-day action checklist, and rates its own reasoning confidence. Note that **AI-generated recommendations are layered on top of the calculated footprint rather than replacing the calculation engine**.
 4. **Interactive Tracking**:
    - **Habits Tracker**: Toggling daily tasks (e.g., *Commuting by bike*) updates XP progress and updates the user's active streak.
    - **Progress Graphs**: Clicking **Log Footprint Audit** commits the current month's audit to a historical list. An SVG chart plots the trend and calculates month-over-month improvements.
 5. **What-If Simulator & Caching Architecture**:
    - **Lifestyle Simulations**: Users can adjust sliders representing transport distance, drive specification, diet patterns, electricity usage, renewable energy share, clothing/tech purchases, and waste methods.
-   - **EPA-Compliant Local Calculations**: Employs EPA compliance emission factors to recalculate the simulated carbon breakdown and Eco Score instantly on the client side, avoiding unnecessary backend AI queries.
+   - **EPA-Compliant Local Calculations**: Employs EPA compliance emission factors to perform **instant client-side recalculation** of the simulated carbon breakdown and Eco Score, avoiding unnecessary backend AI queries.
    - **LocalStorage Scenario Caching**: The simulator checks `localStorage` cache maps using parameter-specific hashes as keys before invoking server-side AI evaluations. If a scenario is analyzed once, subsequent views retrieve the response instantly from `localStorage`.
    - **Firestore Scope Isolation**: In accordance with privacy and storage segregation policies, AI scenario analysis cache entries are stored **only** inside the client browser's `localStorage` and are never written to Firestore. Cloud Firestore continues storing user profiles, daily habits logs, active challenges progress, unlocked badges, and monthly audit history entries only.
 
