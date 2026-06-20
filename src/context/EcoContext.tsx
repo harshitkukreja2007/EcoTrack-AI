@@ -391,21 +391,21 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               lastSyncedDataRef.current.lastHabitsResetDate = JSON.stringify(data.lastHabitsResetDate);
             }
           } else {
-            // Document does not exist: Initialize Firestore with defaults
+            // Document does not exist: Initialize Firestore with current state (preserving guest data)
             await setDoc(userDocRef, {
-              profile: defaultProfile,
-              calculatorData: defaultCalculatorData,
-              habits: defaultHabits,
-              challenges: defaultChallenges,
-              badges: defaultBadges,
-              history: defaultHistory,
-              challengeHistory: [],
-              challengesWeekStart: null,
-              challengesWeekEnd: null,
-              weeklyChallengesStreak: 0,
-              longestChallengeStreak: 0,
-              totalWeeksFullyCompleted: 0,
-              lastHabitsResetDate: null
+              profile,
+              calculatorData,
+              habits,
+              challenges,
+              badges,
+              history,
+              challengeHistory,
+              challengesWeekStart,
+              challengesWeekEnd,
+              weeklyChallengesStreak,
+              longestChallengeStreak,
+              totalWeeksFullyCompleted,
+              lastHabitsResetDate
             });
           }
         } catch (err) {
@@ -505,6 +505,9 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
     lastSyncedDataRef.current[fieldName] = dataStr;
 
+    // Always keep localStorage updated as a local fallback
+    localStorage.setItem(`ecotrack_${fieldName}`, dataStr);
+
     if (auth.currentUser) {
       setTimeout(() => setDbSyncing(true), 0);
       try {
@@ -515,8 +518,6 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       } finally {
         setTimeout(() => setDbSyncing(false), 0);
       }
-    } else {
-      localStorage.setItem(`ecotrack_${fieldName}`, JSON.stringify(data));
     }
   }, [isLoaded]);
 
@@ -875,8 +876,16 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     addXP(xpToGain);
   };
 
-  const updateProfile = (username: string, avatar: string) => {
+  const updateProfile = async (username: string, avatar: string) => {
     setProfile((prev) => ({ ...prev, username, avatar }));
+    if (auth.currentUser) {
+      try {
+        const { updateProfile: updateFirebaseProfile } = await import("firebase/auth");
+        await updateFirebaseProfile(auth.currentUser, { displayName: username });
+      } catch (err) {
+        console.error("Failed to update Firebase Auth profile:", err);
+      }
+    }
   };
 
   const saveCurrentToHistory = () => {
@@ -905,6 +914,22 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setLastHabitsResetDate(null);
     localStorage.clear();
   };
+
+  if (typeof window !== "undefined") {
+    (window as any).ecoContext = {
+      profile,
+      user,
+      updateProfile,
+      saveField,
+      getFirestoreDoc: async () => {
+        if (!user) return null;
+        const docSnap = await getDoc(doc(db, "users", user.uid));
+        return docSnap.exists() ? docSnap.data() : null;
+      }
+    };
+    (window as any).auth = auth;
+    (window as any).db = db;
+  }
 
   return (
     <EcoContext.Provider
