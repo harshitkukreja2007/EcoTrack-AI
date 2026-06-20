@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# debug browser profiles
+chrome-profile-*
+debug-profile-*
+
+# temporary debug/test scripts
+check-db*.js
+test-*.js
