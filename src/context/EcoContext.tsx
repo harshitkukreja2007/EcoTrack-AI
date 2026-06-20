@@ -4,21 +4,11 @@ import React, { createContext, useContext, useState, useEffect, useCallback, use
 import { onAuthStateChanged, User } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
-import { calculateCarbonFootprint, calculateEcoScore } from "@/lib/carbonUtils";
+import { calculateCarbonFootprint, calculateEcoScore, CalculatorData, CarbonBreakdown } from "@/lib/carbonUtils";
+
+export type { CalculatorData, CarbonBreakdown };
 
 // Interfaces
-export interface CalculatorData {
-  transportDistance: number; // km per week
-  transportType: "gasoline" | "diesel" | "hybrid" | "electric" | "public" | "bike_walk";
-  electricityUsage: number; // kWh per month
-  renewableRatio: number; // 0 to 100 (%)
-  dietType: "vegan" | "vegetarian" | "pescatarian" | "average_meat" | "heavy_meat";
-  localFoodRatio: number; // 0 to 100 (%)
-  shoppingClothing: number; // items per month
-  shoppingTech: number; // items per year
-  wasteRecycling: boolean;
-  wasteComposting: boolean;
-}
 
 export interface Habit {
   id: string;

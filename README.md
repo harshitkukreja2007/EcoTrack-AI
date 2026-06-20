@@ -186,3 +186,10 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 ```bash
 npm run build
 ```
+
+### 6. Run Unit Test Suite
+EcoTrack AI includes a comprehensive unit testing suite using **Vitest** to validate carbon calculations, Eco Score math, and payload validation layers.
+```bash
+npm run test
+```
+

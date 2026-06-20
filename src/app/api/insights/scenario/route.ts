@@ -1,9 +1,22 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { validateCalculatorData, validateCarbonBreakdown } from "@/lib/carbonUtils";
 
 export async function POST(req: Request) {
   try {
-    const { currentInputs, simulatedInputs, currentBreakdown, simulatedBreakdown } = await req.json();
+    const body = await req.json();
+    let currentInputs;
+    let simulatedInputs;
+    let currentBreakdown;
+    let simulatedBreakdown;
+    try {
+      currentInputs = validateCalculatorData(body.currentInputs);
+      simulatedInputs = validateCalculatorData(body.simulatedInputs);
+      currentBreakdown = validateCarbonBreakdown(body.currentBreakdown);
+      simulatedBreakdown = validateCarbonBreakdown(body.simulatedBreakdown);
+    } catch (err: any) {
+      return NextResponse.json({ error: err.message || "Invalid payload" }, { status: 400 });
+    }
 
     const apiKey = process.env.GEMINI_API_KEY;
     
