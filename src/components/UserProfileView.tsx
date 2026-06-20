@@ -30,6 +30,12 @@ export default function UserProfileView() {
     setUsernameInput(profile.username);
   }, [profile.username]);
 
+  useEffect(() => {
+    console.log("PROFILE STATE UPDATE IN UI:");
+    console.log("profile.username", profile.username);
+    console.log("profile.displayName", profile.displayName);
+  }, [profile.username, profile.displayName]);
+
   // Determine Level Rank Title
   const getRankTitle = (lvl: number) => {
     if (lvl <= 1) return "Green Cadet";
@@ -40,9 +46,23 @@ export default function UserProfileView() {
   };
 
   const handleSaveProfile = () => {
-    updateProfile(usernameInput, profile.avatar);
+    const editName = usernameInput;
+    console.log("BEFORE SAVE:");
+    console.log("input value", editName);
+    console.log("profile.username", profile.username);
+    console.log("profile.displayName", profile.displayName);
+
+    updateProfile(editName, profile.avatar);
     setIsEditing(false);
     setSaveNotify(true);
+
+    setTimeout(() => {
+      console.log("AFTER SAVE:");
+      console.log("input value", editName);
+      console.log("profile.username", editName);
+      console.log("profile.displayName", editName);
+    }, 100);
+
     setTimeout(() => setSaveNotify(false), 2500);
   };
 

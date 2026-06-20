@@ -70,6 +70,7 @@ export interface HistoryEntry {
 
 export interface UserProfile {
   username: string;
+  displayName?: string;
   avatar: string;
   level: number;
   xp: number;
@@ -165,6 +166,7 @@ const defaultHistory: HistoryEntry[] = [
 
 const defaultProfile: UserProfile = {
   username: "Eco Warrior",
+  displayName: "Eco Warrior",
   avatar: "avatar-1",
   level: 1,
   xp: 0,
@@ -337,8 +339,13 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           if (docSnap.exists()) {
             const data = docSnap.data();
             if (data.profile) {
-              setProfile(data.profile);
-              lastSyncedDataRef.current.profile = JSON.stringify(data.profile);
+              const loadedProfile = {
+                ...data.profile,
+                username: data.profile.username || data.profile.displayName || "Eco Warrior",
+                displayName: data.profile.displayName || data.profile.username || "Eco Warrior",
+              };
+              setProfile(loadedProfile);
+              lastSyncedDataRef.current.profile = JSON.stringify(loadedProfile);
             }
             if (data.calculatorData) {
               setCalculatorData(data.calculatorData);
@@ -392,8 +399,19 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             }
           } else {
             // Document does not exist: Initialize Firestore with current state (preserving guest data)
+            const initialProfile = {
+              ...profile,
+              username: profile.username && profile.username !== "Eco Warrior"
+                ? profile.username
+                : (firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "Eco Warrior"),
+              displayName: profile.displayName && profile.displayName !== "Eco Warrior"
+                ? profile.displayName
+                : (firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "Eco Warrior"),
+            };
+            setProfile(initialProfile);
+            lastSyncedDataRef.current.profile = JSON.stringify(initialProfile);
             await setDoc(userDocRef, {
-              profile,
+              profile: initialProfile,
               calculatorData,
               habits,
               challenges,
@@ -430,8 +448,14 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           const storedResetDate = localStorage.getItem("ecotrack_lastHabitsResetDate");
 
           if (storedProfile) {
-            setProfile(JSON.parse(storedProfile));
-            lastSyncedDataRef.current.profile = storedProfile;
+            const parsed = JSON.parse(storedProfile);
+            const loadedProfile = {
+              ...parsed,
+              username: parsed.username || parsed.displayName || "Eco Warrior",
+              displayName: parsed.displayName || parsed.username || "Eco Warrior",
+            };
+            setProfile(loadedProfile);
+            lastSyncedDataRef.current.profile = JSON.stringify(loadedProfile);
           }
           if (storedCalculator) {
             setCalculatorData(JSON.parse(storedCalculator));
@@ -877,7 +901,7 @@ export const EcoProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateProfile = async (username: string, avatar: string) => {
-    setProfile((prev) => ({ ...prev, username, avatar }));
+    setProfile((prev) => ({ ...prev, username, displayName: username, avatar }));
     if (auth.currentUser) {
       try {
         const { updateProfile: updateFirebaseProfile } = await import("firebase/auth");
